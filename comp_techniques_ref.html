@@ -3,625 +3,877 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comp Techniques - Exam Ref</title>
+<title>CT Exam Ref</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0d0d0d; color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 13px; }
-  
-  header { background: #111; border-bottom: 2px solid #00ff88; padding: 10px 16px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  header h1 { color: #00ff88; font-size: 15px; letter-spacing: 1px; }
-  
-  nav { display: flex; gap: 6px; flex-wrap: wrap; }
-  nav a { background: #1a1a1a; color: #aaa; text-decoration: none; padding: 4px 10px; border-radius: 4px; border: 1px solid #333; font-size: 11px; transition: all 0.2s; }
-  nav a:hover { background: #00ff88; color: #000; border-color: #00ff88; }
+:root {
+  --bg: #f5f5f0;
+  --surface: #ffffff;
+  --border: #e0ddd6;
+  --accent: #2563eb;
+  --accent2: #059669;
+  --text: #1a1a1a;
+  --muted: #6b7280;
+  --code-bg: #f8f7f4;
+  --tag-bg: #eff6ff;
+  --tag-text: #1d4ed8;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Georgia', serif; min-height: 100vh; }
 
-  .container { max-width: 900px; margin: 0 auto; padding: 12px; }
+header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  padding: 0 16px;
+  display: flex; align-items: center; gap: 0;
+}
+.logo { font-size: 15px; font-weight: bold; color: var(--accent); padding: 12px 16px 12px 0; border-right: 1px solid var(--border); margin-right: 12px; font-family: monospace; white-space: nowrap; }
+.tabs { display: flex; }
+.tab-btn { background: none; border: none; padding: 14px 18px; font-size: 13px; font-family: Georgia, serif; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: bold; }
+.tab-btn:hover:not(.active) { color: var(--text); }
 
-  .exp { background: #111; border: 1px solid #222; border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
-  .exp-header { background: #161616; padding: 10px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #222; cursor: pointer; user-select: none; }
-  .exp-header:hover { background: #1c1c1c; }
-  .exp-num { background: #00ff88; color: #000; font-weight: bold; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
-  .exp-title { color: #fff; font-size: 13px; font-weight: bold; flex: 1; }
-  .toggle { color: #00ff88; font-size: 16px; transition: transform 0.2s; }
-  .exp-body { display: none; padding: 12px; }
-  .exp-body.open { display: block; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
 
-  .section-label { color: #00ff88; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 4px; }
-  
-  .theory { background: #0a1a0a; border-left: 3px solid #00ff88; padding: 8px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; font-size: 12px; line-height: 1.6; color: #ccc; }
-  .theory b { color: #00ff88; }
+.home-grid { max-width: 700px; margin: 32px auto; padding: 0 16px; }
+.home-title { font-size: 24px; margin-bottom: 6px; }
+.home-sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; font-family: monospace; }
+.exp-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:500px){ .exp-cards { grid-template-columns: 1fr; } }
+.exp-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; cursor: pointer; transition: all 0.15s; text-align: left; width: 100%; }
+.exp-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(37,99,235,0.08); transform: translateY(-1px); }
+.card-num { font-size: 10px; font-family: monospace; color: var(--accent); font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
+.card-title { font-size: 13px; font-weight: bold; color: var(--text); margin-bottom: 2px; }
+.card-desc { font-size: 11px; color: var(--muted); font-family: monospace; }
 
-  pre { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px; padding: 12px; overflow-x: auto; position: relative; margin: 4px 0 8px; }
-  pre code { color: #e0e0e0; font-size: 12px; line-height: 1.7; }
+.split-layout { display: flex; height: calc(100vh - 49px); }
+.sidebar { width: 200px; min-width: 160px; background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; }
+.sidebar-item { display: block; width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid var(--border); padding: 11px 14px; font-size: 12px; font-family: monospace; color: var(--muted); cursor: pointer; transition: all 0.12s; }
+.sidebar-item:hover { background: var(--bg); color: var(--text); }
+.sidebar-item.active { background: var(--tag-bg); color: var(--accent); font-weight: bold; border-left: 3px solid var(--accent); }
+.sidebar-label { font-size: 9px; letter-spacing: 2px; color: var(--muted); padding: 10px 14px 4px; font-family: monospace; text-transform: uppercase; }
+.main-content { flex: 1; overflow-y: auto; padding: 20px 24px; }
 
-  .copy-btn { position: absolute; top: 6px; right: 6px; background: #1a1a1a; color: #00ff88; border: 1px solid #00ff88; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: monospace; transition: all 0.2s; }
-  .copy-btn:hover { background: #00ff88; color: #000; }
-  .copy-btn.copied { background: #00ff88; color: #000; }
+.code-block-wrap { margin-bottom: 28px; }
+.code-title { font-size: 13px; font-weight: bold; margin-bottom: 4px; color: var(--text); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.code-tag { font-size: 10px; background: var(--tag-bg); color: var(--tag-text); padding: 2px 7px; border-radius: 10px; font-family: monospace; }
+.code-note { font-size: 11px; color: var(--muted); margin-bottom: 8px; font-family: monospace; }
+.code-wrap { position: relative; }
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 14px 14px 14px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.75; color: #1e293b; }
+.copy-btn { position: absolute; top: 8px; right: 8px; background: var(--accent); color: white; border: none; padding: 5px 14px; border-radius: 4px; cursor: pointer; font-size: 11px; font-family: monospace; font-weight: bold; transition: all 0.15s; z-index: 2; }
+.copy-btn:hover { background: #1d4ed8; }
+.copy-btn.ok { background: var(--accent2); }
+.change-box { background: var(--warn-bg); border-left: 3px solid var(--warn); padding: 7px 10px; border-radius: 0 4px 4px 0; font-size: 11px; font-family: monospace; color: #92400e; margin: 4px 0 10px; }
+.output-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; padding: 7px 10px; font-size: 11px; font-family: monospace; color: #166534; margin-top: 6px; }
 
-  .kw { color: #ff79c6; }
-  .fn { color: #50fa7b; }
-  .str { color: #f1fa8c; }
-  .num { color: #bd93f9; }
-  .cm { color: #6272a4; font-style: italic; }
-  .builtin { color: #8be9fd; }
+.exp-section { margin-bottom: 32px; }
+.exp-h1 { font-size: 18px; font-weight: bold; margin-bottom: 4px; }
+.exp-h2 { font-size: 13px; font-family: monospace; color: var(--accent); margin: 18px 0 6px; font-weight: bold; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+.exp-text { font-size: 13px; line-height: 1.7; color: #374151; margin-bottom: 6px; }
+.exp-list { padding-left: 18px; margin-bottom: 8px; }
+.exp-list li { font-size: 13px; line-height: 1.8; color: #374151; }
+.formula-box { background: #f0f4ff; border: 1px solid #c7d2fe; border-radius: 6px; padding: 10px 14px; font-family: monospace; font-size: 12px; color: #3730a3; margin: 6px 0 10px; line-height: 1.8; }
+.flowchart { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px; font-family: monospace; font-size: 12px; line-height: 2; color: #374151; margin: 6px 0 10px; white-space: pre-line; }
+.algo-step { display: flex; gap: 10px; margin-bottom: 6px; font-size: 13px; }
+.step-num { background: var(--accent); color: white; font-family: monospace; font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 10px; height: fit-content; margin-top: 2px; flex-shrink: 0; }
+.step-text { color: #374151; line-height: 1.6; }
+table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 12px; }
+th { background: #f1f5f9; color: var(--text); padding: 7px 10px; text-align: left; border: 1px solid var(--border); font-family: monospace; }
+td { padding: 6px 10px; border: 1px solid var(--border); color: #374151; font-family: monospace; }
+tr:nth-child(even) td { background: #fafaf8; }
 
-  .formula { background: #0a0a1a; border: 1px solid #333; border-radius: 4px; padding: 8px 12px; margin: 4px 0 8px; color: #bd93f9; font-size: 12px; }
-
-  .tip { background: #1a1200; border-left: 3px solid #ffb86c; padding: 6px 10px; border-radius: 0 4px 4px 0; margin: 4px 0 8px; font-size: 11px; color: #ffb86c; }
-
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  @media(max-width: 600px) { .grid2 { grid-template-columns: 1fr; } }
-
-  .output { background: #000; border: 1px solid #1a3a1a; border-radius: 4px; padding: 8px 12px; color: #00ff88; font-size: 11px; margin: 4px 0 8px; }
-
-  .change-note { background: #1a0a1a; border: 1px solid #ff79c6; border-radius: 4px; padding: 6px 10px; margin: 4px 0 8px; font-size: 11px; color: #ff79c6; }
-
-  table { width: 100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 11px; }
-  th { background: #1a1a1a; color: #00ff88; padding: 6px 8px; text-align: left; border: 1px solid #2a2a2a; }
-  td { padding: 5px 8px; border: 1px solid #222; color: #ccc; }
-  tr:hover td { background: #161616; }
+.kw { color: #7c3aed; font-weight: bold; }
+.fn { color: #059669; }
+.st { color: #b45309; }
+.nm { color: #0369a1; }
+.cm { color: #9ca3af; font-style: italic; }
+.bi { color: #0891b2; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>⚡ COMP TECHNIQUES — EXAM REF</h1>
-  <nav>
-    <a href="#exp1">EXP1</a>
-    <a href="#exp2">EXP2</a>
-    <a href="#exp3">EXP3</a>
-    <a href="#exp4">EXP4</a>
-    <a href="#exp5">EXP5</a>
-    <a href="#exp6">EXP6</a>
-    <a href="#exp7">EXP7-RK</a>
-    <a href="#exp8">EXP8</a>
-  </nav>
+  <div class="logo">⚡ CT REF</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('home',this)">Home</button>
+    <button class="tab-btn" onclick="showTab('code',this)">Code</button>
+    <button class="tab-btn" onclick="showTab('experiment',this)">Experiment</button>
+  </div>
 </header>
 
-<div class="container">
-
-<!-- EXP 1 -->
-<div class="exp" id="exp1">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 1</span>
-    <span class="exp-title">Intermediate Value Theorem + Matrix</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-
-    <div class="section-label">Theory</div>
-    <div class="theory">
-      <b>IVT:</b> If f(x) is continuous on [a,b] and <b>f(a) × f(b) &lt; 0</b>, then at least one root exists between a and b.<br>
-      <b>Transpose:</b> Swap rows ↔ columns. matrix[i][j] → matrix[j][i]
-    </div>
-
-    <div class="section-label">Program 1A — IVT</div>
-    <pre><code id="c1a"><span class="kw">import</span> math
-<span class="builtin">print</span>(<span class="str">"Intermediate value theorem"</span>)
-
-<span class="kw">def</span> <span class="fn">func</span>(x):
-    <span class="kw">return</span> math.cos(x) - <span class="num">1.3</span>*x
-
-a = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of a: "</span>))
-b = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of b: "</span>))
-fa = func(a)
-fb = func(b)
-<span class="builtin">print</span>(<span class="str">"a="</span>, a, <span class="str">"b="</span>, b, <span class="str">"fa="</span>, fa, <span class="str">"fb="</span>, fb)
-<span class="kw">if</span> (fa * fb &lt; <span class="num">0</span>):
-    <span class="builtin">print</span>(<span class="str">"Root lies in the interval"</span>)
-<span class="kw">else</span>:
-    <span class="builtin">print</span>(<span class="str">"Root does not lie in the interval"</span>)
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c1a', this)">COPY</button>
-
-    <div class="output">Input: a=0, b=1 → fa=1.0, fb=-0.7596... → Root lies in the interval</div>
-
-    <div class="section-label">Program 1B — Matrix Entry & Print</div>
-    <pre><code id="c1b"><span class="builtin">print</span>(<span class="str">"Program for matrix"</span>)
-R = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of rows: "</span>))
-C = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of columns: "</span>))
-matrix = []
-<span class="builtin">print</span>(<span class="str">"Enter the entries row wise"</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
-    a = []
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
-        a.append(<span class="builtin">int</span>(<span class="builtin">input</span>()))
-    matrix.append(a)
-<span class="builtin">print</span>(<span class="str">"The matrix is: "</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
-        <span class="builtin">print</span>(matrix[i][j], end=<span class="str">" "</span>)
-    <span class="builtin">print</span>()
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c1b', this)">COPY</button>
-
-    <div class="section-label">Program 1C — Transpose</div>
-    <div class="change-note">⚡ Only ONE change from matrix: <b>matrix[i][j]</b> → <b>matrix[j][i]</b></div>
-    <pre><code id="c1c"><span class="builtin">print</span>(<span class="str">"Program for Transpose"</span>)
-R = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of rows: "</span>))
-C = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of columns: "</span>))
-matrix = []
-<span class="builtin">print</span>(<span class="str">"Enter the entries row wise"</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
-    a = []
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
-        a.append(<span class="builtin">int</span>(<span class="builtin">input</span>()))
-    matrix.append(a)
-<span class="builtin">print</span>(<span class="str">"The matrix is: "</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
-        <span class="builtin">print</span>(matrix[j][i], end=<span class="str">" "</span>)  <span class="cm"># j,i swapped!</span>
-    <span class="builtin">print</span>()
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c1c', this)">COPY</button>
-
+<!-- HOME -->
+<div id="tab-home" class="tab-pane active">
+<div class="home-grid">
+  <div class="home-title">Computational Techniques</div>
+  <div class="home-sub">Exam Quick Reference · All 8 Experiments</div>
+  <div class="exp-cards">
+    <button class="exp-card" onclick="goTo('c1')"><div class="card-num">EXP 01</div><div class="card-title">IVT + Matrix</div><div class="card-desc">Intermediate Value Theorem, Transpose</div></button>
+    <button class="exp-card" onclick="goTo('c2')"><div class="card-num">EXP 02</div><div class="card-title">Bisection Method</div><div class="card-desc">Root finding by halving interval</div></button>
+    <button class="exp-card" onclick="goTo('c3')"><div class="card-num">EXP 03</div><div class="card-title">Newton-Raphson</div><div class="card-desc">Root finding with derivative</div></button>
+    <button class="exp-card" onclick="goTo('c4')"><div class="card-num">EXP 04</div><div class="card-title">Newton Forward</div><div class="card-desc">Interpolation — equal spacing</div></button>
+    <button class="exp-card" onclick="goTo('c5')"><div class="card-num">EXP 05</div><div class="card-title">Lagrange</div><div class="card-desc">Interpolation — unequal spacing</div></button>
+    <button class="exp-card" onclick="goTo('c6')"><div class="card-num">EXP 06</div><div class="card-title">Simpson's 1/3</div><div class="card-desc">Numerical integration</div></button>
+    <button class="exp-card" onclick="goTo('c7')"><div class="card-num">EXP 07</div><div class="card-title">Runge-Kutta 4th</div><div class="card-desc">Solve dy/dx = f(x,y)</div></button>
+    <button class="exp-card" onclick="goTo('c8')"><div class="card-num">EXP 08</div><div class="card-title">Jacobi Method</div><div class="card-desc">Simultaneous equations</div></button>
   </div>
 </div>
+</div>
 
-<!-- EXP 2 -->
-<div class="exp" id="exp2">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 2</span>
-    <span class="exp-title">Bisection Method</span>
-    <span class="toggle">▼</span>
+<!-- CODE TAB -->
+<div id="tab-code" class="tab-pane">
+<div class="split-layout">
+  <div class="sidebar" id="code-sidebar">
+    <div class="sidebar-label">Experiments</div>
+    <button class="sidebar-item active" onclick="showCode('c1',this)">EXP1 · IVT + Matrix</button>
+    <button class="sidebar-item" onclick="showCode('c2',this)">EXP2 · Bisection</button>
+    <button class="sidebar-item" onclick="showCode('c3',this)">EXP3 · Newton-Raphson</button>
+    <button class="sidebar-item" onclick="showCode('c4',this)">EXP4 · Newton Fwd</button>
+    <button class="sidebar-item" onclick="showCode('c5',this)">EXP5 · Lagrange</button>
+    <button class="sidebar-item" onclick="showCode('c6',this)">EXP6 · Simpson 1/3</button>
+    <button class="sidebar-item" onclick="showCode('c7',this)">EXP7 · Runge-Kutta</button>
+    <button class="sidebar-item" onclick="showCode('c8',this)">EXP8 · Jacobi</button>
   </div>
-  <div class="exp-body open">
+  <div class="main-content" id="code-main">
 
-    <div class="theory">
-      <b>Idea:</b> Repeatedly halve the interval [a,b]. Midpoint c=(a+b)/2.<br>
-      If f(c)×f(a) &lt; 0 → root in left half → b=c<br>
-      Else → root in right half → a=c
+    <div id="c1" class="code-section">
+      <div class="code-block-wrap">
+        <div class="code-title">1A — Intermediate Value Theorem <span class="code-tag">EXP 1</span></div>
+        <div class="code-wrap">
+          <pre id="p1a"><span class="kw">import</span> math
+<span class="bi">print</span>(<span class="st">"Intermediate value theorem"</span>)
+
+<span class="kw">def</span> <span class="fn">func</span>(x):
+    <span class="kw">return</span> math.cos(x) - <span class="nm">1.3</span>*x  <span class="cm"># change this</span>
+
+a = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of a: "</span>))
+b = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of b: "</span>))
+fa = func(a)
+fb = func(b)
+<span class="bi">print</span>(<span class="st">"a="</span>, a, <span class="st">"b="</span>, b, <span class="st">"fa="</span>, fa, <span class="st">"fb="</span>, fb)
+<span class="kw">if</span> (fa * fb &lt; <span class="nm">0</span>):
+    <span class="bi">print</span>(<span class="st">"Root lies in the interval"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">"Root does not lie in the interval"</span>)
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p1a',this)">COPY</button>
+        </div>
+        <div class="output-box">a=0, b=1 → fa=1.0, fb=-0.7596... → Root lies in the interval</div>
+      </div>
+      <div class="code-block-wrap">
+        <div class="code-title">1B — Matrix Entry &amp; Print <span class="code-tag">EXP 1</span></div>
+        <div class="code-wrap">
+          <pre id="p1b"><span class="bi">print</span>(<span class="st">"Program for matrix"</span>)
+R = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the no. of rows: "</span>))
+C = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the no. of columns: "</span>))
+matrix = []
+<span class="bi">print</span>(<span class="st">"Enter the entries row wise"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(R):
+    a = []
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(C):
+        a.append(<span class="bi">int</span>(<span class="bi">input</span>()))
+    matrix.append(a)
+<span class="bi">print</span>(<span class="st">"The matrix is: "</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(R):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(C):
+        <span class="bi">print</span>(matrix[i][j], end=<span class="st">" "</span>)
+    <span class="bi">print</span>()
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p1b',this)">COPY</button>
+        </div>
+      </div>
+      <div class="code-block-wrap">
+        <div class="code-title">1C — Matrix Transpose <span class="code-tag">EXP 1</span></div>
+        <div class="change-box">⚡ Only one change from 1B: matrix[i][j] → matrix[j][i]</div>
+        <div class="code-wrap">
+          <pre id="p1c"><span class="bi">print</span>(<span class="st">"Program for Transpose"</span>)
+R = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the no. of rows: "</span>))
+C = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the no. of columns: "</span>))
+matrix = []
+<span class="bi">print</span>(<span class="st">"Enter the entries row wise"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(R):
+    a = []
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(C):
+        a.append(<span class="bi">int</span>(<span class="bi">input</span>()))
+    matrix.append(a)
+<span class="bi">print</span>(<span class="st">"The matrix is: "</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(R):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(C):
+        <span class="bi">print</span>(matrix[j][i], end=<span class="st">" "</span>)  <span class="cm"># j,i swapped!</span>
+    <span class="bi">print</span>()
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p1c',this)">COPY</button>
+        </div>
+      </div>
     </div>
 
-    <div class="formula">c = (a + b) / 2 &nbsp;&nbsp;|&nbsp;&nbsp; n ≥ [log(b-a) - log(e)] / log2</div>
-
-    <pre><code id="c2"><span class="builtin">print</span>(<span class="str">"Program for Bisection method"</span>)
+    <div id="c2" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Bisection Method <span class="code-tag">EXP 2</span></div>
+        <div class="change-box">⚡ Only change func(x). Example: x³−x−1 → return x**3 - x - 1</div>
+        <div class="code-wrap">
+          <pre id="p2"><span class="bi">print</span>(<span class="st">"Program for Bisection method"</span>)
 <span class="kw">import</span> math
 
 <span class="kw">def</span> <span class="fn">func</span>(x):
     <span class="kw">return</span> math.cos(x) - x * math.exp(x)  <span class="cm"># change this</span>
 
-a = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of a: "</span>))
-b = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of b: "</span>))
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of iterations: "</span>))
+a = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of a: "</span>))
+b = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of b: "</span>))
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the no. of iterations: "</span>))
 fa = func(a)
 fb = func(b)
 
-<span class="kw">if</span> (fa * fb &lt; <span class="num">0</span>):
-    <span class="builtin">print</span>(<span class="str">"Roots lies in the interval"</span>)
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n+<span class="num">1</span>):
-        <span class="builtin">print</span>(<span class="str">"Enter the no. of iteration"</span>, i)
-        c = (a + b) / <span class="num">2</span>
+<span class="kw">if</span> (fa * fb &lt; <span class="nm">0</span>):
+    <span class="bi">print</span>(<span class="st">"Roots lies in the interval"</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>):
+        <span class="bi">print</span>(<span class="st">"Enter the no. of iteration"</span>, i)
+        c = (a + b) / <span class="nm">2</span>
         fc = func(c)
-        <span class="builtin">print</span>(<span class="str">"the value of a"</span>, a)
-        <span class="builtin">print</span>(<span class="str">"the value of b"</span>, b)
-        <span class="builtin">print</span>(<span class="str">"the value of fa"</span>, fa)
-        <span class="builtin">print</span>(<span class="str">"the value of fb"</span>, fb)
-        <span class="kw">if</span> (fc * fa &lt; <span class="num">0</span>):
+        <span class="bi">print</span>(<span class="st">"the value of a"</span>, a)
+        <span class="bi">print</span>(<span class="st">"the value of b"</span>, b)
+        <span class="bi">print</span>(<span class="st">"the value of fa"</span>, fa)
+        <span class="bi">print</span>(<span class="st">"the value of fb"</span>, fb)
+        <span class="kw">if</span> (fc * fa &lt; <span class="nm">0</span>):
             b = c
         <span class="kw">else</span>:
             a = c
-    <span class="builtin">print</span>(<span class="str">"The value of c"</span>, c)
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c2', this)">COPY</button>
-
-    <div class="output">Input: a=0, b=1, n=5 → ... → The value of c 0.53125</div>
-
-    <div class="tip">⚡ Only change func(x). For x³-x-1: return x**3 - x - 1</div>
-
-    <table>
-      <tr><th>f(x)</th><th>return statement</th></tr>
-      <tr><td>cos(x) - xe^x</td><td>math.cos(x) - x*math.exp(x)</td></tr>
-      <tr><td>x³ - x - 1</td><td>x**3 - x - 1</td></tr>
-      <tr><td>x² - 4</td><td>x**2 - 4</td></tr>
-      <tr><td>sin(x) - x/2</td><td>math.sin(x) - x/2</td></tr>
-      <tr><td>e^x - 3x</td><td>math.exp(x) - 3*x</td></tr>
-    </table>
-
-  </div>
-</div>
-
-<!-- EXP 3 -->
-<div class="exp" id="exp3">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 3</span>
-    <span class="exp-title">Newton-Raphson Method</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-
-    <div class="theory">
-      <b>Idea:</b> Start with guess x₀, improve using tangent line.<br>
-      Need BOTH f(x) AND f'(x) (derivative).
+    <span class="bi">print</span>(<span class="st">"The value of c"</span>, c)
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p2',this)">COPY</button>
+        </div>
+        <div class="output-box">a=0, b=1, n=5 → The value of c 0.53125</div>
+      </div>
+      <table>
+        <tr><th>f(x)</th><th>return statement</th></tr>
+        <tr><td>cos(x) − xe^x</td><td>math.cos(x) - x*math.exp(x)</td></tr>
+        <tr><td>x³ − x − 1</td><td>x**3 - x - 1</td></tr>
+        <tr><td>x² − 4</td><td>x**2 - 4</td></tr>
+        <tr><td>sin(x) − x/2</td><td>math.sin(x) - x/2</td></tr>
+        <tr><td>e^x − 3x</td><td>math.exp(x) - 3*x</td></tr>
+      </table>
     </div>
 
-    <div class="formula">x₁ = x₀ - f(x₀) / f'(x₀) &nbsp;&nbsp;|&nbsp;&nbsp; xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)</div>
-
-    <pre><code id="c3"><span class="builtin">print</span>(<span class="str">"Program for newton Raphson method"</span>)
+    <div id="c3" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Newton-Raphson Method <span class="code-tag">EXP 3</span></div>
+        <div class="change-box">⚡ Change BOTH func(x) and fd(x) — f(x) and its derivative f'(x)</div>
+        <div class="code-wrap">
+          <pre id="p3"><span class="bi">print</span>(<span class="st">"Program for newton Raphson method"</span>)
 <span class="kw">import</span> math
 
 <span class="kw">def</span> <span class="fn">func</span>(x):
-    <span class="kw">return</span> math.cos(x) - x * math.exp(x)  <span class="cm"># f(x) — change this</span>
+    <span class="kw">return</span> math.cos(x) - x * math.exp(x)  <span class="cm"># f(x)</span>
 
 <span class="kw">def</span> <span class="fn">fd</span>(x):
-    <span class="kw">return</span> -math.sin(x) - (x * math.exp(x) + math.exp(x))  <span class="cm"># f'(x) — change this</span>
+    <span class="kw">return</span> -math.sin(x) - (x*math.exp(x) + math.exp(x))  <span class="cm"># f'(x)</span>
 
-x0 = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of x0: "</span>))
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of iteration: "</span>))
+x0 = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter the value of x0: "</span>))
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the number of iteration: "</span>))
 
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n+<span class="num">1</span>):
-    <span class="builtin">print</span>(<span class="str">"Enter the number of iteration"</span>, i)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, n+<span class="nm">1</span>):
+    <span class="bi">print</span>(<span class="st">"Enter the number of iteration"</span>, i)
     fx = func(x0)
     fdx = fd(x0)
     x1 = x0 - (fx / fdx)
-    <span class="builtin">print</span>(<span class="str">"x0= "</span>, x0, <span class="str">"f(x0)= "</span>, fx, <span class="str">"fd(x0)= "</span>, fdx, <span class="str">"x1= "</span>, x1)
+    <span class="bi">print</span>(<span class="st">"x0= "</span>,x0, <span class="st">"f(x0)= "</span>,fx, <span class="st">"fd(x0)= "</span>,fdx, <span class="st">"x1= "</span>,x1)
     x0 = x1
-    <span class="builtin">print</span>(<span class="str">"The root of the equation is"</span>, x1)
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c3', this)">COPY</button>
-
-    <div class="output">Input: x0=0, n=5 → ... → The root of the equation is 0.5177...</div>
-
-    <table>
-      <tr><th>f(x)</th><th>f'(x)</th></tr>
-      <tr><td>cos(x) - xe^x</td><td>-sin(x) - (xe^x + e^x)</td></tr>
-      <tr><td>x² + 4sin(x)</td><td>2x + 4cos(x)</td></tr>
-      <tr><td>3x - cos(x) - 1</td><td>3 + sin(x)</td></tr>
-      <tr><td>xlog(x) - 1.2</td><td>1 + log(x)</td></tr>
-      <tr><td>x³ - x - 1</td><td>3x² - 1</td></tr>
-    </table>
-
-    <div class="tip">⚡ Use float for x0 (initial guess can be decimal). Use int for n (iterations).</div>
-
-  </div>
-</div>
-
-<!-- EXP 4 -->
-<div class="exp" id="exp4">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 4</span>
-    <span class="exp-title">Newton's Forward Interpolation</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-
-    <div class="theory">
-      <b>Use when:</b> x values are <b>equally spaced</b>.<br>
-      <b>p</b> = (xr - x[0]) / h &nbsp;&nbsp; <b>h</b> = x[1] - x[0]
+    <span class="bi">print</span>(<span class="st">"The root of the equation is"</span>, x1)
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p3',this)">COPY</button>
+        </div>
+        <div class="output-box">x0=0, n=5 → root converges to 0.5177...</div>
+      </div>
+      <table>
+        <tr><th>f(x)</th><th>f'(x) for fd(x)</th></tr>
+        <tr><td>cos(x) − xe^x</td><td>-math.sin(x) - (x*math.exp(x)+math.exp(x))</td></tr>
+        <tr><td>x² + 4sin(x)</td><td>2*x + 4*math.cos(x)</td></tr>
+        <tr><td>x³ − x − 1</td><td>3*x**2 - 1</td></tr>
+        <tr><td>xlog(x) − 1.2</td><td>1 + math.log(x)</td></tr>
+        <tr><td>3x − cos(x) − 1</td><td>3 + math.sin(x)</td></tr>
+      </table>
     </div>
 
-    <div class="formula">yp = y₀ + p·Δy₀ + p(p-1)/2! · Δ²y₀ + p(p-1)(p-2)/3! · Δ³y₀ + ...</div>
-
-    <pre><code id="c4"><span class="cm">#program for newton forward interpolation method</span>
+    <div id="c4" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Newton's Forward Interpolation <span class="code-tag">EXP 4</span></div>
+        <div class="change-box">⚡ Use when x values are EQUALLY SPACED. Just enter data when prompted.</div>
+        <div class="code-wrap">
+          <pre id="p4"><span class="cm"># Newton Forward Interpolation</span>
 x = []
 y = []
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"enter the values of entries"</span>))
-<span class="builtin">print</span>(<span class="str">"enter the value of x"</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
-    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"enter the values of entries"</span>))
+<span class="bi">print</span>(<span class="st">"enter the value of x"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+    ele = <span class="bi">float</span>(<span class="bi">input</span>())
     x.append(ele)
-<span class="builtin">print</span>(x)
-<span class="builtin">print</span>(<span class="str">"enter the value of y"</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
-    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+<span class="bi">print</span>(x)
+<span class="bi">print</span>(<span class="st">"enter the value of y"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+    ele = <span class="bi">float</span>(<span class="bi">input</span>())
     y.append(ele)
-<span class="builtin">print</span>(y)
-xr = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of x for which y is to be calculated"</span>))
-h = x[<span class="num">1</span>] - x[<span class="num">0</span>]
-p = (xr - x[<span class="num">0</span>]) / h
-yp = y[<span class="num">0</span>]
-s = <span class="num">1</span>
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n-<span class="num">1</span>):
-    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(n-i):
-        y[j] = y[j+<span class="num">1</span>] - y[j]
-    s = s * (p - i + <span class="num">1</span>) / i
-    yp = yp + s * y[<span class="num">0</span>]
-<span class="builtin">print</span>(<span class="str">"yp"</span>, yp)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c4', this)">COPY</button>
-
-    <div class="output">Entries=4, x=[1,2,3,4], y=[1,4,9,16], xr=1.5 → yp 2.25</div>
-
-    <div class="tip">⚡ x values must be equally spaced. h = difference between consecutive x values.</div>
-
-  </div>
-</div>
-
-<!-- EXP 5 -->
-<div class="exp" id="exp5">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 5</span>
-    <span class="exp-title">Lagrange's Interpolation</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-
-    <div class="theory">
-      <b>Use when:</b> x values are <b>NOT equally spaced</b>.<br>
-      For each j: multiply (xr-x[i])/(x[j]-x[i]) for all i≠j, then × y[j]
+<span class="bi">print</span>(y)
+xr = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"enter the value of x for which y is to be calculated"</span>))
+h = x[<span class="nm">1</span>] - x[<span class="nm">0</span>]
+p = (xr - x[<span class="nm">0</span>]) / h
+yp = y[<span class="nm">0</span>]
+s = <span class="nm">1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, n-<span class="nm">1</span>):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(n-i):
+        y[j] = y[j+<span class="nm">1</span>] - y[j]
+    s = s * (p - i + <span class="nm">1</span>) / i
+    yp = yp + s * y[<span class="nm">0</span>]
+<span class="bi">print</span>(<span class="st">"yp"</span>, yp)</pre>
+          <button class="copy-btn" onclick="cp('p4',this)">COPY</button>
+        </div>
+        <div class="output-box">n=4, x=[1,2,3,4], y=[1,4,9,16], xr=1.5 → yp 2.25</div>
+      </div>
     </div>
 
-    <pre><code id="c5"><span class="cm"># Program for Lagranges Method</span>
+    <div id="c5" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Lagrange's Interpolation <span class="code-tag">EXP 5</span></div>
+        <div class="change-box">⚡ Use when x values are NOT equally spaced. Just enter data.</div>
+        <div class="code-wrap">
+          <pre id="p5"><span class="cm"># Program for Lagranges Method</span>
 x = []
 y = []
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the values of entries:"</span>))
-<span class="builtin">print</span>(<span class="str">"Enter the value of x"</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
-    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the values of entries:"</span>))
+<span class="bi">print</span>(<span class="st">"Enter the value of x"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+    ele = <span class="bi">float</span>(<span class="bi">input</span>())
     x.append(ele)
-<span class="builtin">print</span>(x)
-<span class="builtin">print</span>(<span class="str">"Enter the value of y"</span>)
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
-    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+<span class="bi">print</span>(x)
+<span class="bi">print</span>(<span class="st">"Enter the value of y"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(n):
+    ele = <span class="bi">float</span>(<span class="bi">input</span>())
     y.append(ele)
-<span class="builtin">print</span>(y)
-xr = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of x for which y is to be calculated:"</span>))
-fy = <span class="num">0</span>
-<span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">0</span>, n):
-    num = <span class="num">1</span>
-    den = <span class="num">1</span>
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">0</span>, n):
+<span class="bi">print</span>(y)
+xr = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter the value of x for which y is to be calculated:"</span>))
+fy = <span class="nm">0</span>
+<span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">0</span>, n):
+    num = <span class="nm">1</span>
+    den = <span class="nm">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">0</span>, n):
         <span class="kw">if</span>(i != j):
             num = num * (xr - x[i])
             den = den * (x[j] - x[i])
-    fy = <span class="builtin">float</span>(fy + (num/den) * y[j])
-<span class="builtin">print</span>(<span class="str">"The value of fy at xr="</span>, xr, <span class="str">"is yr="</span>, fy)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c5', this)">COPY</button>
-
-    <div class="output">Entries=4, x=[1,3,4,5], y=[1,9,16,25], xr=1.5 → yr= 2.25</div>
-
-    <div class="tip">⚡ num builds numerator, den builds denominator for each Lagrange basis term. i≠j is the key condition.</div>
-
-  </div>
-</div>
-
-<!-- EXP 6 -->
-<div class="exp" id="exp6">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 6</span>
-    <span class="exp-title">Simpson's 1/3 Rule (Numerical Integration)</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-
-    <div class="theory">
-      <b>Formula:</b> I = h/3 × [(y₀+yₙ) + 4(odd terms) + 2(even terms)]<br>
-      <b>n must be EVEN.</b> Odd index → ×4, Even index → ×2
-    </div>
-
-    <div class="formula">I = (h/3) × [first + last + 4×(y₁+y₃+...) + 2×(y₂+y₄+...)]</div>
-
-    <div class="grid2">
-      <div>
-        <div class="section-label">Program — Version 1 (sin-log-exp)</div>
-        <pre><code id="c6a"><span class="builtin">print</span>(<span class="str">"Program for Simpson's 1/3 Rule:"</span>)
-<span class="kw">import</span> math
-
-<span class="kw">def</span> <span class="fn">f</span>(x):
-    <span class="kw">return</span> math.sin(x)-math.log(x)+math.exp(x)
-
-lo = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the lower limit:"</span>))
-up = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the upper limit:"</span>))
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of strips:"</span>))
-h = <span class="builtin">float</span>((up - lo) / n)
-<span class="builtin">print</span>(<span class="str">"Step size(h):"</span>, h)
-sum = <span class="num">0</span>
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n):
-    k = lo + i * h
-    <span class="kw">if</span> i % <span class="num">2</span> == <span class="num">0</span>:
-        sum = sum + f(k) * <span class="num">2</span>
-    <span class="kw">else</span>:
-        sum = sum + f(k) * <span class="num">4</span>
-sum = <span class="builtin">float</span>(h/<span class="num">3</span> * (sum + f(lo) + f(up)))
-<span class="builtin">print</span>(<span class="str">"Answer:"</span>, sum)
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-        <button class="copy-btn" onclick="copyCode('c6a', this)">COPY</button>
-      </div>
-      <div>
-        <div class="section-label">Program — Version 2 (1/(1+x²))</div>
-        <pre><code id="c6b"><span class="builtin">print</span>(<span class="str">"Program for Simpson's 1/3 Rule:"</span>)
-<span class="kw">import</span> math
-
-<span class="kw">def</span> <span class="fn">f</span>(x):
-    <span class="kw">return</span> <span class="num">1</span>/(<span class="num">1</span> + x**<span class="num">2</span>)  <span class="cm"># change this</span>
-
-lo = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the lower limit:"</span>))
-up = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the upper limit:"</span>))
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of strips:"</span>))
-h = <span class="builtin">float</span>((up - lo) / n)
-<span class="builtin">print</span>(<span class="str">"Step size(h):"</span>, h)
-sum = <span class="num">0</span>
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n):
-    k = lo + i * h
-    <span class="kw">if</span> i % <span class="num">2</span> == <span class="num">0</span>:
-        sum = sum + f(k) * <span class="num">2</span>
-    <span class="kw">else</span>:
-        sum = sum + f(k) * <span class="num">4</span>
-sum = <span class="builtin">float</span>(h/<span class="num">3</span> * (sum + f(lo) + f(up)))
-<span class="builtin">print</span>(<span class="str">"Answer:"</span>, sum)
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-        <button class="copy-btn" onclick="copyCode('c6b', this)">COPY</button>
+    fy = <span class="bi">float</span>(fy + (num/den) * y[j])
+<span class="bi">print</span>(<span class="st">"The value of fy at xr="</span>, xr, <span class="st">"is yr="</span>, fy)</pre>
+          <button class="copy-btn" onclick="cp('p5',this)">COPY</button>
+        </div>
+        <div class="output-box">n=4, x=[1,3,4,5], y=[1,9,16,25], xr=1.5 → yr= 2.25</div>
       </div>
     </div>
 
-    <div class="output">lo=0.2, up=1.4, n=12 → Answer: 4.051057545909173</div>
-    <div class="tip">⚡ i%2==0 → even → ×2 &nbsp;|&nbsp; i%2!=0 → odd → ×4 &nbsp;|&nbsp; n MUST be even!</div>
+    <div id="c6" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Simpson's 1/3 — Version A: sin−log+exp <span class="code-tag">EXP 6</span></div>
+        <div class="change-box">⚡ n MUST be EVEN. Odd index → ×4, Even index → ×2</div>
+        <div class="code-wrap">
+          <pre id="p6a"><span class="bi">print</span>(<span class="st">"Program for Simpson's 1/3 Rule:"</span>)
+<span class="kw">import</span> math
 
-  </div>
-</div>
+<span class="kw">def</span> <span class="fn">f</span>(x):
+    <span class="kw">return</span> math.sin(x) - math.log(x) + math.exp(x)
 
-<!-- EXP 7 RK -->
-<div class="exp" id="exp7">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 7</span>
-    <span class="exp-title">Runge-Kutta 4th Order (ODE)</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
+lo = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter the lower limit of integration:"</span>))
+up = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter the upper limit of integration:"</span>))
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the number of strips:"</span>))
+h = <span class="bi">float</span>((up - lo) / n)
+<span class="bi">print</span>(<span class="st">"Step size(h):"</span>, h)
+sum = <span class="nm">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, n):
+    k = lo + i * h
+    <span class="kw">if</span> i % <span class="nm">2</span> == <span class="nm">0</span>:
+        sum = sum + f(k) * <span class="nm">2</span>
+    <span class="kw">else</span>:
+        sum = sum + f(k) * <span class="nm">4</span>
+sum = <span class="bi">float</span>(h/<span class="nm">3</span> * (sum + f(lo) + f(up)))
+<span class="bi">print</span>(<span class="st">"Answer:"</span>, sum)
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p6a',this)">COPY</button>
+        </div>
+        <div class="output-box">lo=0.2, up=1.4, n=12 → Answer: 4.051057545909173</div>
+      </div>
+      <div class="code-block-wrap">
+        <div class="code-title">Simpson's 1/3 — Version B: 1/(1+x²) <span class="code-tag">EXP 6</span></div>
+        <div class="code-wrap">
+          <pre id="p6b"><span class="bi">print</span>(<span class="st">"Program for Simpson's 1/3 Rule:"</span>)
+<span class="kw">import</span> math
 
-    <div class="theory">
-      <b>Solves:</b> dy/dx = f(x,y) given y(x₀) = y₀<br>
-      Computes 4 slopes K1 K2 K3 K4, takes weighted average.
+<span class="kw">def</span> <span class="fn">f</span>(x):
+    <span class="kw">return</span> <span class="nm">1</span>/(<span class="nm">1</span> + x**<span class="nm">2</span>)  <span class="cm"># change this if needed</span>
+
+lo = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter the lower limit of integration:"</span>))
+up = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"Enter the upper limit of integration:"</span>))
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the number of strips:"</span>))
+h = <span class="bi">float</span>((up - lo) / n)
+<span class="bi">print</span>(<span class="st">"Step size(h):"</span>, h)
+sum = <span class="nm">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, n):
+    k = lo + i * h
+    <span class="kw">if</span> i % <span class="nm">2</span> == <span class="nm">0</span>:
+        sum = sum + f(k) * <span class="nm">2</span>
+    <span class="kw">else</span>:
+        sum = sum + f(k) * <span class="nm">4</span>
+sum = <span class="bi">float</span>(h/<span class="nm">3</span> * (sum + f(lo) + f(up)))
+<span class="bi">print</span>(<span class="st">"Answer:"</span>, sum)
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p6b',this)">COPY</button>
+        </div>
+        <div class="output-box">lo=0, up=6, n=8 → Answer: 1.3904817583886768</div>
+      </div>
     </div>
 
-    <div class="formula">
-      K1 = h·f(x₀, y₀) &nbsp;|&nbsp; K2 = h·f(x₀+h/2, y₀+K1/2)<br>
-      K3 = h·f(x₀+h/2, y₀+K2/2) &nbsp;|&nbsp; K4 = h·f(x₀+h, y₀+K3)<br>
-      K = (K1 + 2K2 + 2K3 + K4) / 6 &nbsp;|&nbsp; y₁ = y₀ + K
-    </div>
-
-    <pre><code id="c7"><span class="cm"># Program for Runge-Kutta method</span>
+    <div id="c7" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Runge-Kutta 4th Order <span class="code-tag">EXP 7</span></div>
+        <div class="change-box">⚡ Only change f(x,y) — the dy/dx equation. Structure stays identical.</div>
+        <div class="code-wrap">
+          <pre id="p7"><span class="cm"># Program for Runge-Kutta method</span>
 <span class="kw">def</span> <span class="fn">f</span>(x, y):
-    <span class="kw">return</span> x + y  <span class="cm"># change this — dy/dx = f(x,y)</span>
+    <span class="kw">return</span> x + y  <span class="cm"># change: dy/dx = f(x,y)</span>
 
-x0 = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of x0:"</span>))
-y0 = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of y0:"</span>))
-xr = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of x at which y is to be found out"</span>))
-h = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the number of stepsize:"</span>))
+x0 = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"enter the value of x0:"</span>))
+y0 = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"enter the value of y0:"</span>))
+xr = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"enter the value of x at which y is to be found out"</span>))
+h = <span class="bi">float</span>(<span class="bi">input</span>(<span class="st">"enter the number of stepsize:"</span>))
 
 <span class="kw">while</span>(x0 &lt; xr):
     k1 = h * f(x0, y0)
-    k2 = h * f(x0 + h/<span class="num">2</span>, y0 + k1/<span class="num">2</span>)
-    k3 = h * f(x0 + h/<span class="num">2</span>, y0 + k2/<span class="num">2</span>)
+    k2 = h * f(x0 + h/<span class="nm">2</span>, y0 + k1/<span class="nm">2</span>)
+    k3 = h * f(x0 + h/<span class="nm">2</span>, y0 + k2/<span class="nm">2</span>)
     k4 = h * f(x0 + h, y0 + k3)
-    k = <span class="num">1</span>/<span class="num">6</span> * (k1 + <span class="num">2</span>*k2 + <span class="num">2</span>*k3 + k4)
-    <span class="builtin">print</span>(<span class="str">"k="</span>, k)
+    k = <span class="nm">1</span>/<span class="nm">6</span> * (k1 + <span class="nm">2</span>*k2 + <span class="nm">2</span>*k3 + k4)
+    <span class="bi">print</span>(<span class="st">"k="</span>, k)
     y1 = y0 + k
     x1 = x0 + h
-    <span class="builtin">print</span>(<span class="str">"y1="</span>, y1)
-    <span class="builtin">print</span>(<span class="str">"x1="</span>, x1)
+    <span class="bi">print</span>(<span class="st">"y1="</span>, y1)
+    <span class="bi">print</span>(<span class="st">"x1="</span>, x1)
     x0 = x1
     y0 = y1
-<span class="builtin">print</span>(<span class="str">"end"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c7', this)">COPY</button>
-
-    <div class="output">x0=0, y0=1, xr=0.2, h=0.1 → y1=1.1103... x1=0.1 → y1=1.2428 x1=0.2</div>
-
-    <table>
-      <tr><th>dy/dx = f(x,y)</th><th>return statement</th></tr>
-      <tr><td>x + y</td><td>return x + y</td></tr>
-      <tr><td>y² - x²</td><td>return y**2 - x**2</td></tr>
-      <tr><td>x - y²</td><td>return x - y**2</td></tr>
-      <tr><td>1 + y²</td><td>return 1 + y**2</td></tr>
-      <tr><td>y² + x²</td><td>return y**2 + x**2</td></tr>
-    </table>
-
-    <div class="tip">⚡ while loop runs until x0 reaches xr. Step size h controls how many iterations.</div>
-
-  </div>
-</div>
-
-<!-- EXP 8 -->
-<div class="exp" id="exp8">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">EXP 8</span>
-    <span class="exp-title">Jacobi Method (Simultaneous Equations)</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-
-    <div class="theory">
-      <b>Solves:</b> system of 3 equations with 3 unknowns iteratively.<br>
-      Rearrange each equation for its diagonal variable. Substitute, repeat.<br>
-      <b>Condition:</b> diagonal elements must be largest (dominant diagonal).
+<span class="bi">print</span>(<span class="st">"end"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p7',this)">COPY</button>
+        </div>
+        <div class="output-box">x0=0, y0=1, xr=0.2, h=0.1 → y1=1.1103... → y1=1.2428</div>
+      </div>
+      <table>
+        <tr><th>dy/dx =</th><th>return statement</th></tr>
+        <tr><td>x + y</td><td>return x + y</td></tr>
+        <tr><td>y² − x²</td><td>return y**2 - x**2</td></tr>
+        <tr><td>x − y²</td><td>return x - y**2</td></tr>
+        <tr><td>y² + x²</td><td>return y**2 + x**2</td></tr>
+      </table>
     </div>
 
-    <div class="section-label">System from your file: 20x₁+x₂-2x₃=17, 3x₁+20x₂-x₃=-18, 2x₁-3x₂+20x₃=25</div>
-
-    <pre><code id="c8"><span class="builtin">print</span>(<span class="str">"Program for Jacobi's Method"</span>)
+    <div id="c8" class="code-section" style="display:none">
+      <div class="code-block-wrap">
+        <div class="code-title">Jacobi Method <span class="code-tag">EXP 8</span></div>
+        <div class="change-box">⚡ Change f1, f2, f3 based on given equations. Rule: x = (d − others) / diagonal</div>
+        <div class="code-wrap">
+          <pre id="p8"><span class="bi">print</span>(<span class="st">"Program for Jacobi's Method"</span>)
+<span class="cm"># 20x1+x2-2x3=17, 3x1+20x2-x3=-18, 2x1-3x2+20x3=25</span>
 
 <span class="kw">def</span> <span class="fn">f1</span>(x, y, z):
-    <span class="kw">return</span> <span class="num">1</span>/<span class="num">20</span> * (<span class="num">17</span> - y + <span class="num">2</span>*z)   <span class="cm"># x1 = (17 - x2 + 2x3) / 20</span>
+    <span class="kw">return</span> <span class="nm">1</span>/<span class="nm">20</span> * (<span class="nm">17</span> - y + <span class="nm">2</span>*z)
 
 <span class="kw">def</span> <span class="fn">f2</span>(x, y, z):
-    <span class="kw">return</span> <span class="num">1</span>/<span class="num">20</span> * (-<span class="num">18</span> - <span class="num">3</span>*x + z)  <span class="cm"># x2 = (-18 - 3x1 + x3) / 20</span>
+    <span class="kw">return</span> <span class="nm">1</span>/<span class="nm">20</span> * (-<span class="nm">18</span> - <span class="nm">3</span>*x + z)
 
 <span class="kw">def</span> <span class="fn">f3</span>(x, y, z):
-    <span class="kw">return</span> <span class="num">1</span>/<span class="num">20</span> * (<span class="num">25</span> - <span class="num">2</span>*x + <span class="num">3</span>*y)  <span class="cm"># x3 = (25 - 2x1 + 3x2) / 20</span>
+    <span class="kw">return</span> <span class="nm">1</span>/<span class="nm">20</span> * (<span class="nm">25</span> - <span class="nm">2</span>*x + <span class="nm">3</span>*y)
 
-x0 = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of x0: "</span>))
-y0 = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of y0: "</span>))
-z0 = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of z0: "</span>))
-n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of iteration: "</span>))
-x0 = <span class="num">0</span>
-y0 = <span class="num">0</span>
-z0 = <span class="num">0</span>
+x0 = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of x0: "</span>))
+y0 = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of y0: "</span>))
+z0 = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the value of z0: "</span>))
+n = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter the number of iteration: "</span>))
+x0 = <span class="nm">0</span>
+y0 = <span class="nm">0</span>
+z0 = <span class="nm">0</span>
 
-<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">0</span>, n):
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">0</span>, n):
     x1 = f1(x0, y0, z0)
     y1 = f2(x0, y0, z0)
     z1 = f3(x0, y0, z0)
-    <span class="builtin">print</span>(<span class="str">"iteration no:"</span>, i+<span class="num">1</span>)
-    <span class="builtin">print</span>(x1, <span class="str">"\t\t"</span>, y1, <span class="str">"\t\t"</span>, z1)
+    <span class="bi">print</span>(<span class="st">"iteration no:"</span>, i+<span class="nm">1</span>)
+    <span class="bi">print</span>(x1, <span class="st">"\t\t"</span>, y1, <span class="st">"\t\t"</span>, z1)
     x0 = x1
     y0 = y1
     z0 = z1
-<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
-    <button class="copy-btn" onclick="copyCode('c8', this)">COPY</button>
-
-    <div class="output">x0=y0=z0=0, n=3 → iteration 1: 0.85, -0.9, 1.25 → ... converging</div>
-
-    <div class="tip">⚡ If examiner gives different equations, ONLY change f1, f2, f3 return statements. Rearrange: x = (d - other terms) / diagonal coefficient</div>
-
-    <div class="section-label">How to rearrange any system</div>
-    <div class="theory">
-      Given: <b>a·x + b·y + c·z = d</b><br>
-      Rearrange for x: <b>x = (d - b·y - c·z) / a</b><br>
-      Do same for y and z using their respective diagonal coefficients.
+<span class="bi">print</span>(<span class="st">"End"</span>)</pre>
+          <button class="copy-btn" onclick="cp('p8',this)">COPY</button>
+        </div>
+        <div class="output-box">x0=y0=z0=0, n=3 → iteration 1: 0.85  −0.9  1.25 → converging</div>
+      </div>
     </div>
 
   </div>
 </div>
-
-<!-- QUICK REF -->
-<div class="exp" id="quickref">
-  <div class="exp-header" onclick="toggle(this)">
-    <span class="exp-num">⚡</span>
-    <span class="exp-title">QUICK REFERENCE — Which Method to Use?</span>
-    <span class="toggle">▼</span>
-  </div>
-  <div class="exp-body open">
-    <table>
-      <tr><th>Question says...</th><th>Use</th><th>Key formula</th></tr>
-      <tr><td>Root of f(x)=0, interval given</td><td>Bisection (EXP 2)</td><td>c = (a+b)/2</td></tr>
-      <tr><td>Root with initial guess x₀</td><td>Newton-Raphson (EXP 3)</td><td>x₁ = x₀ - f/f'</td></tr>
-      <tr><td>Interpolate, equally spaced x</td><td>Newton Forward (EXP 4)</td><td>p = (xr-x₀)/h</td></tr>
-      <tr><td>Interpolate, unequal x spacing</td><td>Lagrange (EXP 5)</td><td>num/den × y[j]</td></tr>
-      <tr><td>Evaluate definite integral</td><td>Simpson's 1/3 (EXP 6)</td><td>h/3 × [ends + 4odd + 2even]</td></tr>
-      <tr><td>Solve dy/dx = f(x,y)</td><td>Runge-Kutta (EXP 7)</td><td>K=(K1+2K2+2K3+K4)/6</td></tr>
-      <tr><td>Solve simultaneous equations</td><td>Jacobi (EXP 8)</td><td>Rearrange for diagonal</td></tr>
-    </table>
-
-    <div class="section-label" style="margin-top:12px">Common math.functions</div>
-    <div class="theory">
-      <b>math.cos(x)</b> &nbsp;|&nbsp; <b>math.sin(x)</b> &nbsp;|&nbsp; <b>math.exp(x)</b> → eˣ &nbsp;|&nbsp; <b>math.log(x)</b> → ln(x)<br>
-      <b>x**2</b> → x² &nbsp;|&nbsp; <b>x**3</b> → x³ &nbsp;|&nbsp; <b>x**0.5</b> → √x
-    </div>
-  </div>
 </div>
 
-</div><!-- end container -->
+<!-- EXPERIMENT TAB -->
+<div id="tab-experiment" class="tab-pane">
+<div class="split-layout">
+  <div class="sidebar" id="exp-sidebar">
+    <div class="sidebar-label">Experiments</div>
+    <button class="sidebar-item active" onclick="showExp('e1',this)">EXP1 · IVT + Matrix</button>
+    <button class="sidebar-item" onclick="showExp('e2',this)">EXP2 · Bisection</button>
+    <button class="sidebar-item" onclick="showExp('e3',this)">EXP3 · Newton-Raphson</button>
+    <button class="sidebar-item" onclick="showExp('e4',this)">EXP4 · Newton Fwd</button>
+    <button class="sidebar-item" onclick="showExp('e5',this)">EXP5 · Lagrange</button>
+    <button class="sidebar-item" onclick="showExp('e6',this)">EXP6 · Simpson 1/3</button>
+    <button class="sidebar-item" onclick="showExp('e7',this)">EXP7 · Runge-Kutta</button>
+    <button class="sidebar-item" onclick="showExp('e8',this)">EXP8 · Jacobi</button>
+  </div>
+  <div class="main-content" id="exp-main">
+
+    <div id="e1" class="exp-section">
+      <div class="exp-h1">Experiment No. 1</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Develop algorithm, draw flow chart and write a program to implement: (a) if-else and function — application in Intermediate Value Theorem. (b) 2D Array formation — application in matrix data entry, transposition and printing matrix.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">To develop algorithm, draw flow chart and write a program to implement if-else and functions in application of Intermediate Value Theorem, and 2D Array formations in matrix data entry, transposition and printing matrix.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text"><strong>Intermediate Value Theorem:</strong> If f(x) is continuous in interval [a,b] and f(a) and f(b) have different signs, then the equation f(x) = 0 has at least one root between x = a and x = b.</div>
+      <div class="exp-text"><strong>Matrix:</strong> A matrix is a rectangular arrangement of numbers (real or complex) enclosed by [ ] or ( ) or || ||. In compact form, the above matrix is represented by [aᵢⱼ] m×n or A = [aᵢⱼ] where i is the row index and j is the column index.</div>
+      <div class="exp-text"><strong>Transpose:</strong> If A = [aᵢⱼ] is an m×n matrix, the matrix obtained by interchanging its rows and columns is called the transpose of A, denoted A' or Aᵀ. Then A' = [aⱼᵢ] of order n×m.</div>
+      <div class="exp-h2">Types of Matrices</div>
+      <ul class="exp-list">
+        <li><strong>Row matrix:</strong> A matrix having only one row and any number of columns.</li>
+        <li><strong>Column matrix:</strong> A matrix having only one column and any number of rows.</li>
+        <li><strong>Square matrix:</strong> A matrix of order m×n such that m = n.</li>
+        <li><strong>Rectangular matrix:</strong> A matrix of order m×n such that m ≠ n.</li>
+        <li><strong>Null/Zero matrix:</strong> All elements are zero, i.e. aᵢⱼ = 0 ∀ i,j.</li>
+        <li><strong>Diagonal matrix:</strong> Square matrix A = [aᵢⱼ] where aᵢⱼ = 0 for i ≠ j.</li>
+        <li><strong>Identity/Unit matrix:</strong> Diagonal matrix where all diagonal elements = 1.</li>
+        <li><strong>Singular matrix:</strong> Square matrix whose determinant = 0, i.e. |A| = 0. Otherwise non-singular.</li>
+      </ul>
+      <div class="exp-h2">Algorithm — IVT</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Read the interval [a, b].</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Calculate f(a) and f(b).</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">If f(a) × f(b) &lt; 0, then root lies in the interval [a,b]. Else root does not lie in the interval.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Display result and stop.</span></div>
+      <div class="exp-h2">Algorithm — Matrix Transpose</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Enter the number of rows R and columns C.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read the coefficients of matrix row wise.</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">Display the matrix on screen.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Calculate the transpose of matrix.</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Display the transposed matrix and stop.</span></div>
+      <div class="exp-h2">Flowchart — IVT</div>
+      <div class="flowchart">START → [Input Interval [a,b]] → [Calculate f(a) and f(b)]
+→ &lt;f(a) × f(b) &lt; 0?&gt;
+    YES → [Root lies in the interval]
+    NO  → [Root does NOT lie in the interval]
+→ [Display result] → STOP</div>
+      <div class="exp-h2">Flowchart — Matrix Transpose</div>
+      <div class="flowchart">START → [Read no. of rows and columns]
+→ [Read the coefficient of matrix]
+→ [Display the matrix on screen]
+→ [Calculate the transpose]
+→ [Display the transposed matrix]
+→ STOP</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">From this experiment we have studied to develop algorithm, flow chart and write a program to implement if-else function in application of Intermediate Value Theorem and matrix transposition.</div>
+    </div>
+
+    <div id="e2" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 2</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Solution of transcendental/polynomial equation using Bisection method.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">To solve given transcendental equation f(x) = cos(x) − xe^x using Bisection method and write a Python program for bisection method.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">Bisection method is the simplest among all numerical schemes to solve transcendental equations. The sequence of approximations always converges to the root for any f(x) which is continuous in the interval. This scheme is based on the Intermediate Value Theorem for continuous functions, which states that if f(x) is continuous in the interval [a,b] and f(a), f(b) have different signs, then the equation f(x) = 0 has at least one root between x = a and x = b.</div>
+      <div class="exp-text">Consider a transcendental equation f(x) = 0 which has a root in the interval [a,b] and f(a)×f(b) &lt; 0. Bisection scheme computes the root by repeatedly halving the interval [a,b]. Starting with c = (a+b)/2, the interval is replaced either with [c,b] or with [a,c] depending on the sign of f(a)×f(c) and f(c)×f(b).</div>
+      <div class="formula-box">c = (a + b) / 2&#10;&#10;Number of iterations needed: n ≥ [log(b−a) − log(e)] / log(2)</div>
+      <div class="exp-h2">Advantages</div>
+      <ul class="exp-list">
+        <li>Simple method.</li>
+        <li>Can be used for both polynomial and transcendental equations.</li>
+        <li>Method always converges as it is a bracketed method.</li>
+      </ul>
+      <div class="exp-h2">Disadvantages</div>
+      <ul class="exp-list">
+        <li>May fail when the function is tangent to the axis and does not cross f(x) = 0.</li>
+        <li>This method is generally more slowly convergent than most other methods for functions f(x) that have a continuous derivative.</li>
+        <li>Bisection method requires large number of iterations.</li>
+      </ul>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Read interval [a,b] and permissible error e.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Calculate number of iterations needed: n ≥ [log(b−a) − log(e)] / log(2).</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">Find next approximation c = (a+b)/2.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Calculate f(a), f(b) and f(c).</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">If f(a)×f(c) &lt; 0, new interval is [a,c], replace b by c. Else if f(c)×f(b) &lt; 0, new interval is [c,b], replace a by c.</span></div>
+      <div class="algo-step"><span class="step-num">6</span><span class="step-text">Repeat step 3 to 6 until number of iterations are reached.</span></div>
+      <div class="algo-step"><span class="step-num">7</span><span class="step-text">Display approximate value of root and stop.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Input interval [a,b] and iterations n]
+→ [c = (a+b)/2]
+→ [Calculate f(a), f(b), f(c)]
+→ &lt;f(a) × f(b) &lt; 0?&gt;
+    YES → &lt;f(a) × f(c) &lt; 0?&gt;
+              YES → b = c → loop back
+              NO  → a = c → loop back
+    NO  → [Root not in interval]
+→ [n = n−1] → &lt;n ≤ 0?&gt;
+    YES → Root = c → [Display root] → STOP
+    NO  → loop back to c = (a+b)/2</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">From this experiment we have studied to write a program for solution of transcendental equation using Bisection Method and to develop algorithm and draw flow chart.</div>
+    </div>
+
+    <div id="e3" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 3</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Solution of transcendental equation using Newton-Raphson method.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">To solve the given transcendental equation using Newton-Raphson method and write a program for it.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">Let x₀ be an approximate root of equation f(x) = 0. If x₁ = x₀ + η be the exact root, then f(x₁) = 0. Expanding f(x₀ + η) by Taylor's series and since η is small, neglecting η² and higher powers of η we get f(x₀) + ηf'(x₀) = 0.</div>
+      <div class="formula-box">η = −f(x₀) / f'(x₀)&#10;&#10;x₁ = x₀ − f(x₀)/f'(x₀)&#10;&#10;General: xₙ₊₁ = xₙ − f(xₙ)/f'(xₙ)   (n = 0, 1, 2, 3 ...)</div>
+      <div class="exp-text">This is known as the Newton-Raphson formula or Newton's iteration formula.</div>
+      <div class="exp-h2">Observations</div>
+      <ul class="exp-list">
+        <li><strong>Obs 1:</strong> Newton's method is useful in cases of large value of f'(x), i.e. when the graph of f(x) while crossing the x-axis is nearly vertical. If f'(x) is small near the root, computation is slow or may not be possible.</li>
+        <li><strong>Obs 2:</strong> Geometrical interpretation — the method consists of replacing the part of the curve between point A₀ and the x-axis by the tangent to the curve at A₀.</li>
+        <li><strong>Obs 3:</strong> Newton's method is generally used to improve the result obtained by other methods. It is applicable to solution of both algebraic and transcendental equations.</li>
+        <li><strong>Obs 4:</strong> Newton's formula converges provided the initial approximation x₀ is chosen sufficiently close to the root. A bad initial choice will lead to an endless cycle.</li>
+      </ul>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Start.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read the values of x₀ and n (number of iterations).</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">Calculate f(x) and f'(x).</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Calculate next approximation: x₁ = x₀ − f(x₀)/f'(x₀).</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Check whether number of iterations has reached. Yes → stop. No → go to step 3, make x₁ = x₀.</span></div>
+      <div class="algo-step"><span class="step-num">6</span><span class="step-text">Display the root and stop.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Input initial approximation x₀ and iterations n]
+→ [Calculate f(x), f'(x)] → [i = 1]
+→ [Calculate x₁ = x₀ − f(x₀)/f'(x₀)]
+→ [i = i + 1]
+→ &lt;i ≤ n+1?&gt;
+    YES → x₀ = x₁ → loop back
+    NO  → [Display root = x₀] → STOP</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">From the experiment we learnt to solve the transcendental equation using Newton-Raphson method and to develop program and flowchart for it.</div>
+    </div>
+
+    <div id="e4" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 4</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Program for interpolation using Newton's Forward interpolation.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">To write a program for interpolation using Newton's Forward interpolation.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">Let the function y = f(x) take the values y₀, y₁, y₂, ... corresponding to the values x₀, x₀+h, x₀+2h, ... of x. Suppose it is required to evaluate f(x) for x = x₀+ph, where p is any real number. For any real number p, we have defined E such that Eᵖf(x) = f(x+ph) = (1+Δ)ᵖy₀.</div>
+      <div class="formula-box">yₚ = y₀ + pΔy₀ + p(p−1)/2! × Δ²y₀ + p(p−1)(p−2)/3! × Δ³y₀ + ...&#10;&#10;where p = (x − x₀) / h  and  h = x₁ − x₀</div>
+      <div class="exp-text">If y = f(x) is a polynomial of nth degree then Δⁿy and higher differences will be zero.</div>
+      <div class="exp-h2">Forward Difference Table</div>
+      <table>
+        <tr><th>x</th><th>y</th><th>Δy</th><th>Δ²y</th><th>Δ³y</th></tr>
+        <tr><td>x₀</td><td>y₀</td><td>Δy₀ = y₁−y₀</td><td>Δ²y₀ = Δy₁−Δy₀</td><td>Δ³y₀</td></tr>
+        <tr><td>x₁</td><td>y₁</td><td>Δy₁ = y₂−y₁</td><td>Δ²y₁ = Δy₂−Δy₁</td><td>Δ³y₁</td></tr>
+        <tr><td>x₂</td><td>y₂</td><td>Δy₂ = y₃−y₂</td><td>Δ²y₂</td><td></td></tr>
+        <tr><td>x₃</td><td>y₃</td><td>Δy₃ = y₄−y₃</td><td></td><td></td></tr>
+      </table>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Enter the maximum number of data points n.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read all the data points and read value of x = xr at which y is to be interpolated.</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">If there are (n+1) data points, calculate the value of yp using Newton's Forward formula.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">The interpolated value at x = xr is equal to y.</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Display the value and stop.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Read max number of data]
+→ [Read actual values of data]
+→ [Read value of xr at which yr is to be calculated]
+→ [Calculate value of yr using Newton's Forward Interpolation Formula]
+→ [Display value of xr and yr]
+→ STOP</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">In this practical we learnt Newton's forward interpolation and also to develop algorithm for this method.</div>
+    </div>
+
+    <div id="e5" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 5</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Program for interpolation using Lagrange's interpolation.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">To write a program for interpolation using Lagrange's interpolation.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">Let f(x₀), f(x₁), ..., f(xₙ) be the (n+1) values of the function y = f(x) corresponding to arguments x₀, x₁, x₂, ..., xₙ, not necessarily equally spaced. It is assumed that the function f(x) is a polynomial in x of degree n.</div>
+      <div class="formula-box">f(x) = [(x−x₁)(x−x₂)...(x−xₙ)] / [(x₀−x₁)(x₀−x₂)...(x₀−xₙ)] × f(x₀)
+     + [(x−x₀)(x−x₂)...(x−xₙ)] / [(x₁−x₀)(x₁−x₂)...(x₁−xₙ)] × f(x₁)
+     + ...
+     + [(x−x₀)(x−x₁)...(x−xₙ₋₁)] / [(xₙ−x₀)(xₙ−x₁)...(xₙ−xₙ₋₁)] × f(xₙ)</div>
+      <div class="exp-text">This is Lagrange's Interpolation Formula. Works for both equally and unequally spaced data.</div>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Enter the maximum number of data points.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read all the data points and read values of x = xr at which y is to be interpolated.</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">For each j, calculate numerator = product of (xr−x[i]) for i≠j, and denominator = product of (x[j]−x[i]) for i≠j. Add (num/den)×y[j] to fy.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">The interpolated value at x = xr is equal to fy.</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Display the value and stop.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Read max number of data points]
+→ [Read actual values of data (x and y)]
+→ [Read values of xr at which yr is to be calculated]
+→ [Calculate value of yr using Lagrange's interpolation formula]
+→ [Display value of xr and yr]
+→ STOP</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">From this practical we learnt to write a program for interpolation using Lagrange's interpolation and also to write algorithm and develop flow chart.</div>
+    </div>
+
+    <div id="e6" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 6</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Solution of Numerical Integration using Simpson's 1/3 Rule.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">Write a program to evaluate integral of given function by dividing the integral in parts using Simpson's 1/3 rule.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">Trapezoidal rule approximates the graph between two adjacent points by the straight line joining them. Against this, Simpson's Rule makes use of the parabola joining three adjacent points to approximate the graph. A parabola can be drawn through any three non-collinear points. The Simpson formula is arrived at by dividing the given interval [a,b] into 'n' sub-intervals of equal length where n must be an even integer.</div>
+      <div class="formula-box">I = h/3 × [(y₀+yₙ) + 4(y₁+y₃+...+yₙ₋₁) + 2(y₂+y₄+...+yₙ₋₂)]&#10;&#10;= (1/3) × h × [first+last + 4×(odd ordinates) + 2×(even ordinates)]&#10;&#10;This formula is also called the Parabolic formula. n MUST be even.</div>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Enter initial values: upper limit and lower limit.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read value of spacing h or number of intervals n. Let n = (xₙ−x₀)/h.</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">Calculate the values of y for corresponding values of x.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Calculate I = h/3 × [(y₀+yₙ) + 4(odd terms) + 2(even terms)].</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Display the result.</span></div>
+      <div class="algo-step"><span class="step-num">6</span><span class="step-text">Stop.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Enter lower limit, upper limit and number of intervals]
+→ [Calculate step size h = (upper−lower)/n]
+→ [Calculate y₀, y₁, y₂, ..., yₙ]
+→ [Calculate I using Simpson's 1/3 Rule formula]
+→ [Print output]
+→ STOP</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">In this experiment, we learned Simpson's 1/3 rule, flowchart and algorithm for Simpson's 1/3 rule.</div>
+    </div>
+
+    <div id="e7" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 7</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Solution of first order ODE using 4th order Runge-Kutta method.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">Write a program to evaluate dy/dx = f(x,y), find y(x) using 4th order Runge-Kutta method.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">Taylor series method involves finding out the higher order derivatives of y numerically. RK method was introduced to avoid calculations of higher order derivatives. It requires calculations only at some selected points. In the 4th order RK method, we calculate the increment K corresponding to an increment h in x.</div>
+      <div class="formula-box">K₁ = h·f(x₀, y₀)                        ← full step slope
+K₂ = h·f(x₀+h/2, y₀+K₁/2)          ← midpoint slope
+K₃ = h·f(x₀+h/2, y₀+K₂/2)          ← better midpoint slope
+K₄ = h·f(x₀+h, y₀+K₃)              ← endpoint slope
+
+K  = (1/6)(K₁ + 2K₂ + 2K₃ + K₄)   ← weighted average
+y₁ = y₀ + K</div>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Enter the initial values x₀, y₀ and step size h.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read the values of x at which y is to be found.</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">Calculate K₁, K₂, K₃, K₄ at current x₀, y₀.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Calculate K = (1/6)(K₁ + 2K₂ + 2K₃ + K₄).</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Calculate y₁ = y₀ + K and x₁ = x₀ + h.</span></div>
+      <div class="algo-step"><span class="step-num">6</span><span class="step-text">Repeat step 3 to 5 till x₀ reaches xr (the required x value).</span></div>
+      <div class="algo-step"><span class="step-num">7</span><span class="step-text">Display the result and stop.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Read x₀, y₀, xr, h]
+→ [Calculate K₁, K₂, K₃, K₄]
+→ [K = (K₁+2K₂+2K₃+K₄)/6]
+→ [y₁ = y₀ + K, x₁ = x₀ + h]
+→ &lt;x₀ &lt; xr?&gt;
+    YES → x₀ = x₁, y₀ = y₁ → loop back
+    NO  → [Display x₁, y₁] → STOP</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">In this experiment we studied to solve numerical ODE by developing program and algorithm using Runge-Kutta 4th order method.</div>
+    </div>
+
+    <div id="e8" class="exp-section" style="display:none">
+      <div class="exp-h1">Experiment No. 8</div>
+      <div class="exp-h2">Title</div>
+      <div class="exp-text">Solution of simultaneous equation using Jacobi method.</div>
+      <div class="exp-h2">Aim</div>
+      <div class="exp-text">Find the solution to the following system of equations using Jacobi method: 20x₁ + x₂ − 2x₃ = 17, 3x₁ + 20x₂ − x₃ = −18, 2x₁ − 3x₂ + 20x₃ = 25. Take initial approximation x₁ = x₂ = x₃ = 0, show 3 iterations.</div>
+      <div class="exp-h2">Theory</div>
+      <div class="exp-text">In certain cases such as when a system of equations is large, iterative methods of solving equations are more advantageous. Elimination methods such as Gaussian elimination are prone to large round-off errors for a large set of equations. Iterative methods such as the Jacobi method give the user control of the round-off error.</div>
+      <div class="exp-text">The Jacobi method requires that the diagonal elements are non-zero. Each equation is rewritten for its diagonal variable. Starting with initial approximation x₀, y₀, z₀ and substituting on right hand side gives first approximations:</div>
+      <div class="formula-box">x = (1/a₁₁)(d₁ − a₁₂y − a₁₃z)
+y = (1/a₂₂)(d₂ − a₂₁x − a₂₃z)
+z = (1/a₃₃)(d₃ − a₃₁x − a₃₂y)
+
+General: x^(k+1) = (1/a₁₁)(d₁ − a₁₂y^k − a₁₃z^k)
+
+Rearrange rule: a·x + b·y + c·z = d → x = (d − b·y − c·z) / a</div>
+      <div class="exp-h2">Algorithm</div>
+      <div class="algo-step"><span class="step-num">1</span><span class="step-text">Read the number of variables n in the equations.</span></div>
+      <div class="algo-step"><span class="step-num">2</span><span class="step-text">Read the coefficients of equations aᵢⱼ for i=1 to n, j=1 to n and dᵢ.</span></div>
+      <div class="algo-step"><span class="step-num">3</span><span class="step-text">Arrange equations such that diagonal elements are dominant and represent system in iterative form.</span></div>
+      <div class="algo-step"><span class="step-num">4</span><span class="step-text">Take initial values of approximations for the number of variables.</span></div>
+      <div class="algo-step"><span class="step-num">5</span><span class="step-text">Execute the iterative equations with values of variables from initial values.</span></div>
+      <div class="algo-step"><span class="step-num">6</span><span class="step-text">Repeat step 5 until number of iterations or required accuracy is achieved.</span></div>
+      <div class="algo-step"><span class="step-num">7</span><span class="step-text">Display the values and STOP.</span></div>
+      <div class="exp-h2">Flowchart</div>
+      <div class="flowchart">START → [Read number of variables]
+→ [Read coefficient of variables]
+→ [Arrange equations so diagonal elements are dominant]
+→ [Take initial values of approximations]
+→ [Calculate x₁=f1(x0,y0,z0), y₁=f2(...), z₁=f3(...)]
+→ &lt;Desired iterations reached?&gt;
+    YES → [Display the results] → STOP
+    NO  → x₀=x₁, y₀=y₁, z₀=z₁ → loop back</div>
+      <div class="exp-h2">Conclusion</div>
+      <div class="exp-text">In this experiment we learnt about how to build algorithm for Jacobi method and we solve the numericals using Jacobi iterative method.</div>
+    </div>
+
+  </div>
+</div>
+</div>
 
 <script>
-function toggle(header) {
-  const body = header.nextElementSibling;
-  const icon = header.querySelector('.toggle');
-  body.classList.toggle('open');
-  icon.textContent = body.classList.contains('open') ? '▼' : '▶';
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
 }
 
-function copyCode(id, btn) {
-  const el = document.getElementById(id);
-  const text = el.innerText;
+function showCode(id, btn) {
+  document.querySelectorAll('.code-section').forEach(s => s.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+  document.querySelectorAll('#code-sidebar .sidebar-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('code-main').scrollTop = 0;
+}
+
+function showExp(id, btn) {
+  document.querySelectorAll('.exp-section').forEach(s => s.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+  document.querySelectorAll('#exp-sidebar .sidebar-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('exp-main').scrollTop = 0;
+}
+
+function goTo(section) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-code').classList.add('active');
+  document.querySelectorAll('.tab-btn')[1].classList.add('active');
+  document.querySelectorAll('.code-section').forEach(s => s.style.display = 'none');
+  document.getElementById(section).style.display = 'block';
+  const idx = ['c1','c2','c3','c4','c5','c6','c7','c8'].indexOf(section);
+  const btns = document.querySelectorAll('#code-sidebar .sidebar-item');
+  btns.forEach(b => b.classList.remove('active'));
+  if(btns[idx]) btns[idx].classList.add('active');
+}
+
+function cp(id, btn) {
+  const text = document.getElementById(id).innerText;
   navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'COPIED!';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = 'COPY';
-      btn.classList.remove('copied');
-    }, 2000);
+    btn.textContent = '✓ COPIED';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('ok'); }, 2000);
   });
 }
 </script>
-
 </body>
 </html>
