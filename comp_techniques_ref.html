@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comp Techniques - Exam Ref</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 13px; }
+  
+  header { background: #111; border-bottom: 2px solid #00ff88; padding: 10px 16px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  header h1 { color: #00ff88; font-size: 15px; letter-spacing: 1px; }
+  
+  nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a { background: #1a1a1a; color: #aaa; text-decoration: none; padding: 4px 10px; border-radius: 4px; border: 1px solid #333; font-size: 11px; transition: all 0.2s; }
+  nav a:hover { background: #00ff88; color: #000; border-color: #00ff88; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 12px; }
+
+  .exp { background: #111; border: 1px solid #222; border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  .exp-header { background: #161616; padding: 10px 14px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #222; cursor: pointer; user-select: none; }
+  .exp-header:hover { background: #1c1c1c; }
+  .exp-num { background: #00ff88; color: #000; font-weight: bold; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+  .exp-title { color: #fff; font-size: 13px; font-weight: bold; flex: 1; }
+  .toggle { color: #00ff88; font-size: 16px; transition: transform 0.2s; }
+  .exp-body { display: none; padding: 12px; }
+  .exp-body.open { display: block; }
+
+  .section-label { color: #00ff88; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 10px 0 4px; }
+  
+  .theory { background: #0a1a0a; border-left: 3px solid #00ff88; padding: 8px 10px; border-radius: 0 4px 4px 0; margin-bottom: 8px; font-size: 12px; line-height: 1.6; color: #ccc; }
+  .theory b { color: #00ff88; }
+
+  pre { background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 6px; padding: 12px; overflow-x: auto; position: relative; margin: 4px 0 8px; }
+  pre code { color: #e0e0e0; font-size: 12px; line-height: 1.7; }
+
+  .copy-btn { position: absolute; top: 6px; right: 6px; background: #1a1a1a; color: #00ff88; border: 1px solid #00ff88; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 10px; font-family: monospace; transition: all 0.2s; }
+  .copy-btn:hover { background: #00ff88; color: #000; }
+  .copy-btn.copied { background: #00ff88; color: #000; }
+
+  .kw { color: #ff79c6; }
+  .fn { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .num { color: #bd93f9; }
+  .cm { color: #6272a4; font-style: italic; }
+  .builtin { color: #8be9fd; }
+
+  .formula { background: #0a0a1a; border: 1px solid #333; border-radius: 4px; padding: 8px 12px; margin: 4px 0 8px; color: #bd93f9; font-size: 12px; }
+
+  .tip { background: #1a1200; border-left: 3px solid #ffb86c; padding: 6px 10px; border-radius: 0 4px 4px 0; margin: 4px 0 8px; font-size: 11px; color: #ffb86c; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media(max-width: 600px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .output { background: #000; border: 1px solid #1a3a1a; border-radius: 4px; padding: 8px 12px; color: #00ff88; font-size: 11px; margin: 4px 0 8px; }
+
+  .change-note { background: #1a0a1a; border: 1px solid #ff79c6; border-radius: 4px; padding: 6px 10px; margin: 4px 0 8px; font-size: 11px; color: #ff79c6; }
+
+  table { width: 100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 11px; }
+  th { background: #1a1a1a; color: #00ff88; padding: 6px 8px; text-align: left; border: 1px solid #2a2a2a; }
+  td { padding: 5px 8px; border: 1px solid #222; color: #ccc; }
+  tr:hover td { background: #161616; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ COMP TECHNIQUES — EXAM REF</h1>
+  <nav>
+    <a href="#exp1">EXP1</a>
+    <a href="#exp2">EXP2</a>
+    <a href="#exp3">EXP3</a>
+    <a href="#exp4">EXP4</a>
+    <a href="#exp5">EXP5</a>
+    <a href="#exp6">EXP6</a>
+    <a href="#exp7">EXP7-RK</a>
+    <a href="#exp8">EXP8</a>
+  </nav>
+</header>
+
+<div class="container">
+
+<!-- EXP 1 -->
+<div class="exp" id="exp1">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 1</span>
+    <span class="exp-title">Intermediate Value Theorem + Matrix</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="section-label">Theory</div>
+    <div class="theory">
+      <b>IVT:</b> If f(x) is continuous on [a,b] and <b>f(a) × f(b) &lt; 0</b>, then at least one root exists between a and b.<br>
+      <b>Transpose:</b> Swap rows ↔ columns. matrix[i][j] → matrix[j][i]
+    </div>
+
+    <div class="section-label">Program 1A — IVT</div>
+    <pre><code id="c1a"><span class="kw">import</span> math
+<span class="builtin">print</span>(<span class="str">"Intermediate value theorem"</span>)
+
+<span class="kw">def</span> <span class="fn">func</span>(x):
+    <span class="kw">return</span> math.cos(x) - <span class="num">1.3</span>*x
+
+a = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of a: "</span>))
+b = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of b: "</span>))
+fa = func(a)
+fb = func(b)
+<span class="builtin">print</span>(<span class="str">"a="</span>, a, <span class="str">"b="</span>, b, <span class="str">"fa="</span>, fa, <span class="str">"fb="</span>, fb)
+<span class="kw">if</span> (fa * fb &lt; <span class="num">0</span>):
+    <span class="builtin">print</span>(<span class="str">"Root lies in the interval"</span>)
+<span class="kw">else</span>:
+    <span class="builtin">print</span>(<span class="str">"Root does not lie in the interval"</span>)
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c1a', this)">COPY</button>
+
+    <div class="output">Input: a=0, b=1 → fa=1.0, fb=-0.7596... → Root lies in the interval</div>
+
+    <div class="section-label">Program 1B — Matrix Entry & Print</div>
+    <pre><code id="c1b"><span class="builtin">print</span>(<span class="str">"Program for matrix"</span>)
+R = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of rows: "</span>))
+C = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of columns: "</span>))
+matrix = []
+<span class="builtin">print</span>(<span class="str">"Enter the entries row wise"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
+    a = []
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
+        a.append(<span class="builtin">int</span>(<span class="builtin">input</span>()))
+    matrix.append(a)
+<span class="builtin">print</span>(<span class="str">"The matrix is: "</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
+        <span class="builtin">print</span>(matrix[i][j], end=<span class="str">" "</span>)
+    <span class="builtin">print</span>()
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c1b', this)">COPY</button>
+
+    <div class="section-label">Program 1C — Transpose</div>
+    <div class="change-note">⚡ Only ONE change from matrix: <b>matrix[i][j]</b> → <b>matrix[j][i]</b></div>
+    <pre><code id="c1c"><span class="builtin">print</span>(<span class="str">"Program for Transpose"</span>)
+R = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of rows: "</span>))
+C = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of columns: "</span>))
+matrix = []
+<span class="builtin">print</span>(<span class="str">"Enter the entries row wise"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
+    a = []
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
+        a.append(<span class="builtin">int</span>(<span class="builtin">input</span>()))
+    matrix.append(a)
+<span class="builtin">print</span>(<span class="str">"The matrix is: "</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(R):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(C):
+        <span class="builtin">print</span>(matrix[j][i], end=<span class="str">" "</span>)  <span class="cm"># j,i swapped!</span>
+    <span class="builtin">print</span>()
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c1c', this)">COPY</button>
+
+  </div>
+</div>
+
+<!-- EXP 2 -->
+<div class="exp" id="exp2">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 2</span>
+    <span class="exp-title">Bisection Method</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Idea:</b> Repeatedly halve the interval [a,b]. Midpoint c=(a+b)/2.<br>
+      If f(c)×f(a) &lt; 0 → root in left half → b=c<br>
+      Else → root in right half → a=c
+    </div>
+
+    <div class="formula">c = (a + b) / 2 &nbsp;&nbsp;|&nbsp;&nbsp; n ≥ [log(b-a) - log(e)] / log2</div>
+
+    <pre><code id="c2"><span class="builtin">print</span>(<span class="str">"Program for Bisection method"</span>)
+<span class="kw">import</span> math
+
+<span class="kw">def</span> <span class="fn">func</span>(x):
+    <span class="kw">return</span> math.cos(x) - x * math.exp(x)  <span class="cm"># change this</span>
+
+a = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of a: "</span>))
+b = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of b: "</span>))
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the no. of iterations: "</span>))
+fa = func(a)
+fb = func(b)
+
+<span class="kw">if</span> (fa * fb &lt; <span class="num">0</span>):
+    <span class="builtin">print</span>(<span class="str">"Roots lies in the interval"</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n+<span class="num">1</span>):
+        <span class="builtin">print</span>(<span class="str">"Enter the no. of iteration"</span>, i)
+        c = (a + b) / <span class="num">2</span>
+        fc = func(c)
+        <span class="builtin">print</span>(<span class="str">"the value of a"</span>, a)
+        <span class="builtin">print</span>(<span class="str">"the value of b"</span>, b)
+        <span class="builtin">print</span>(<span class="str">"the value of fa"</span>, fa)
+        <span class="builtin">print</span>(<span class="str">"the value of fb"</span>, fb)
+        <span class="kw">if</span> (fc * fa &lt; <span class="num">0</span>):
+            b = c
+        <span class="kw">else</span>:
+            a = c
+    <span class="builtin">print</span>(<span class="str">"The value of c"</span>, c)
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c2', this)">COPY</button>
+
+    <div class="output">Input: a=0, b=1, n=5 → ... → The value of c 0.53125</div>
+
+    <div class="tip">⚡ Only change func(x). For x³-x-1: return x**3 - x - 1</div>
+
+    <table>
+      <tr><th>f(x)</th><th>return statement</th></tr>
+      <tr><td>cos(x) - xe^x</td><td>math.cos(x) - x*math.exp(x)</td></tr>
+      <tr><td>x³ - x - 1</td><td>x**3 - x - 1</td></tr>
+      <tr><td>x² - 4</td><td>x**2 - 4</td></tr>
+      <tr><td>sin(x) - x/2</td><td>math.sin(x) - x/2</td></tr>
+      <tr><td>e^x - 3x</td><td>math.exp(x) - 3*x</td></tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- EXP 3 -->
+<div class="exp" id="exp3">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 3</span>
+    <span class="exp-title">Newton-Raphson Method</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Idea:</b> Start with guess x₀, improve using tangent line.<br>
+      Need BOTH f(x) AND f'(x) (derivative).
+    </div>
+
+    <div class="formula">x₁ = x₀ - f(x₀) / f'(x₀) &nbsp;&nbsp;|&nbsp;&nbsp; xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)</div>
+
+    <pre><code id="c3"><span class="builtin">print</span>(<span class="str">"Program for newton Raphson method"</span>)
+<span class="kw">import</span> math
+
+<span class="kw">def</span> <span class="fn">func</span>(x):
+    <span class="kw">return</span> math.cos(x) - x * math.exp(x)  <span class="cm"># f(x) — change this</span>
+
+<span class="kw">def</span> <span class="fn">fd</span>(x):
+    <span class="kw">return</span> -math.sin(x) - (x * math.exp(x) + math.exp(x))  <span class="cm"># f'(x) — change this</span>
+
+x0 = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of x0: "</span>))
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of iteration: "</span>))
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n+<span class="num">1</span>):
+    <span class="builtin">print</span>(<span class="str">"Enter the number of iteration"</span>, i)
+    fx = func(x0)
+    fdx = fd(x0)
+    x1 = x0 - (fx / fdx)
+    <span class="builtin">print</span>(<span class="str">"x0= "</span>, x0, <span class="str">"f(x0)= "</span>, fx, <span class="str">"fd(x0)= "</span>, fdx, <span class="str">"x1= "</span>, x1)
+    x0 = x1
+    <span class="builtin">print</span>(<span class="str">"The root of the equation is"</span>, x1)
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c3', this)">COPY</button>
+
+    <div class="output">Input: x0=0, n=5 → ... → The root of the equation is 0.5177...</div>
+
+    <table>
+      <tr><th>f(x)</th><th>f'(x)</th></tr>
+      <tr><td>cos(x) - xe^x</td><td>-sin(x) - (xe^x + e^x)</td></tr>
+      <tr><td>x² + 4sin(x)</td><td>2x + 4cos(x)</td></tr>
+      <tr><td>3x - cos(x) - 1</td><td>3 + sin(x)</td></tr>
+      <tr><td>xlog(x) - 1.2</td><td>1 + log(x)</td></tr>
+      <tr><td>x³ - x - 1</td><td>3x² - 1</td></tr>
+    </table>
+
+    <div class="tip">⚡ Use float for x0 (initial guess can be decimal). Use int for n (iterations).</div>
+
+  </div>
+</div>
+
+<!-- EXP 4 -->
+<div class="exp" id="exp4">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 4</span>
+    <span class="exp-title">Newton's Forward Interpolation</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Use when:</b> x values are <b>equally spaced</b>.<br>
+      <b>p</b> = (xr - x[0]) / h &nbsp;&nbsp; <b>h</b> = x[1] - x[0]
+    </div>
+
+    <div class="formula">yp = y₀ + p·Δy₀ + p(p-1)/2! · Δ²y₀ + p(p-1)(p-2)/3! · Δ³y₀ + ...</div>
+
+    <pre><code id="c4"><span class="cm">#program for newton forward interpolation method</span>
+x = []
+y = []
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"enter the values of entries"</span>))
+<span class="builtin">print</span>(<span class="str">"enter the value of x"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
+    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+    x.append(ele)
+<span class="builtin">print</span>(x)
+<span class="builtin">print</span>(<span class="str">"enter the value of y"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
+    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+    y.append(ele)
+<span class="builtin">print</span>(y)
+xr = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of x for which y is to be calculated"</span>))
+h = x[<span class="num">1</span>] - x[<span class="num">0</span>]
+p = (xr - x[<span class="num">0</span>]) / h
+yp = y[<span class="num">0</span>]
+s = <span class="num">1</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n-<span class="num">1</span>):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(n-i):
+        y[j] = y[j+<span class="num">1</span>] - y[j]
+    s = s * (p - i + <span class="num">1</span>) / i
+    yp = yp + s * y[<span class="num">0</span>]
+<span class="builtin">print</span>(<span class="str">"yp"</span>, yp)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c4', this)">COPY</button>
+
+    <div class="output">Entries=4, x=[1,2,3,4], y=[1,4,9,16], xr=1.5 → yp 2.25</div>
+
+    <div class="tip">⚡ x values must be equally spaced. h = difference between consecutive x values.</div>
+
+  </div>
+</div>
+
+<!-- EXP 5 -->
+<div class="exp" id="exp5">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 5</span>
+    <span class="exp-title">Lagrange's Interpolation</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Use when:</b> x values are <b>NOT equally spaced</b>.<br>
+      For each j: multiply (xr-x[i])/(x[j]-x[i]) for all i≠j, then × y[j]
+    </div>
+
+    <pre><code id="c5"><span class="cm"># Program for Lagranges Method</span>
+x = []
+y = []
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the values of entries:"</span>))
+<span class="builtin">print</span>(<span class="str">"Enter the value of x"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
+    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+    x.append(ele)
+<span class="builtin">print</span>(x)
+<span class="builtin">print</span>(<span class="str">"Enter the value of y"</span>)
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(n):
+    ele = <span class="builtin">float</span>(<span class="builtin">input</span>())
+    y.append(ele)
+<span class="builtin">print</span>(y)
+xr = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of x for which y is to be calculated:"</span>))
+fy = <span class="num">0</span>
+<span class="kw">for</span> j <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">0</span>, n):
+    num = <span class="num">1</span>
+    den = <span class="num">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">0</span>, n):
+        <span class="kw">if</span>(i != j):
+            num = num * (xr - x[i])
+            den = den * (x[j] - x[i])
+    fy = <span class="builtin">float</span>(fy + (num/den) * y[j])
+<span class="builtin">print</span>(<span class="str">"The value of fy at xr="</span>, xr, <span class="str">"is yr="</span>, fy)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c5', this)">COPY</button>
+
+    <div class="output">Entries=4, x=[1,3,4,5], y=[1,9,16,25], xr=1.5 → yr= 2.25</div>
+
+    <div class="tip">⚡ num builds numerator, den builds denominator for each Lagrange basis term. i≠j is the key condition.</div>
+
+  </div>
+</div>
+
+<!-- EXP 6 -->
+<div class="exp" id="exp6">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 6</span>
+    <span class="exp-title">Simpson's 1/3 Rule (Numerical Integration)</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Formula:</b> I = h/3 × [(y₀+yₙ) + 4(odd terms) + 2(even terms)]<br>
+      <b>n must be EVEN.</b> Odd index → ×4, Even index → ×2
+    </div>
+
+    <div class="formula">I = (h/3) × [first + last + 4×(y₁+y₃+...) + 2×(y₂+y₄+...)]</div>
+
+    <div class="grid2">
+      <div>
+        <div class="section-label">Program — Version 1 (sin-log-exp)</div>
+        <pre><code id="c6a"><span class="builtin">print</span>(<span class="str">"Program for Simpson's 1/3 Rule:"</span>)
+<span class="kw">import</span> math
+
+<span class="kw">def</span> <span class="fn">f</span>(x):
+    <span class="kw">return</span> math.sin(x)-math.log(x)+math.exp(x)
+
+lo = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the lower limit:"</span>))
+up = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the upper limit:"</span>))
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of strips:"</span>))
+h = <span class="builtin">float</span>((up - lo) / n)
+<span class="builtin">print</span>(<span class="str">"Step size(h):"</span>, h)
+sum = <span class="num">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n):
+    k = lo + i * h
+    <span class="kw">if</span> i % <span class="num">2</span> == <span class="num">0</span>:
+        sum = sum + f(k) * <span class="num">2</span>
+    <span class="kw">else</span>:
+        sum = sum + f(k) * <span class="num">4</span>
+sum = <span class="builtin">float</span>(h/<span class="num">3</span> * (sum + f(lo) + f(up)))
+<span class="builtin">print</span>(<span class="str">"Answer:"</span>, sum)
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+        <button class="copy-btn" onclick="copyCode('c6a', this)">COPY</button>
+      </div>
+      <div>
+        <div class="section-label">Program — Version 2 (1/(1+x²))</div>
+        <pre><code id="c6b"><span class="builtin">print</span>(<span class="str">"Program for Simpson's 1/3 Rule:"</span>)
+<span class="kw">import</span> math
+
+<span class="kw">def</span> <span class="fn">f</span>(x):
+    <span class="kw">return</span> <span class="num">1</span>/(<span class="num">1</span> + x**<span class="num">2</span>)  <span class="cm"># change this</span>
+
+lo = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the lower limit:"</span>))
+up = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"Enter the upper limit:"</span>))
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of strips:"</span>))
+h = <span class="builtin">float</span>((up - lo) / n)
+<span class="builtin">print</span>(<span class="str">"Step size(h):"</span>, h)
+sum = <span class="num">0</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">1</span>, n):
+    k = lo + i * h
+    <span class="kw">if</span> i % <span class="num">2</span> == <span class="num">0</span>:
+        sum = sum + f(k) * <span class="num">2</span>
+    <span class="kw">else</span>:
+        sum = sum + f(k) * <span class="num">4</span>
+sum = <span class="builtin">float</span>(h/<span class="num">3</span> * (sum + f(lo) + f(up)))
+<span class="builtin">print</span>(<span class="str">"Answer:"</span>, sum)
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+        <button class="copy-btn" onclick="copyCode('c6b', this)">COPY</button>
+      </div>
+    </div>
+
+    <div class="output">lo=0.2, up=1.4, n=12 → Answer: 4.051057545909173</div>
+    <div class="tip">⚡ i%2==0 → even → ×2 &nbsp;|&nbsp; i%2!=0 → odd → ×4 &nbsp;|&nbsp; n MUST be even!</div>
+
+  </div>
+</div>
+
+<!-- EXP 7 RK -->
+<div class="exp" id="exp7">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 7</span>
+    <span class="exp-title">Runge-Kutta 4th Order (ODE)</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Solves:</b> dy/dx = f(x,y) given y(x₀) = y₀<br>
+      Computes 4 slopes K1 K2 K3 K4, takes weighted average.
+    </div>
+
+    <div class="formula">
+      K1 = h·f(x₀, y₀) &nbsp;|&nbsp; K2 = h·f(x₀+h/2, y₀+K1/2)<br>
+      K3 = h·f(x₀+h/2, y₀+K2/2) &nbsp;|&nbsp; K4 = h·f(x₀+h, y₀+K3)<br>
+      K = (K1 + 2K2 + 2K3 + K4) / 6 &nbsp;|&nbsp; y₁ = y₀ + K
+    </div>
+
+    <pre><code id="c7"><span class="cm"># Program for Runge-Kutta method</span>
+<span class="kw">def</span> <span class="fn">f</span>(x, y):
+    <span class="kw">return</span> x + y  <span class="cm"># change this — dy/dx = f(x,y)</span>
+
+x0 = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of x0:"</span>))
+y0 = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of y0:"</span>))
+xr = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the value of x at which y is to be found out"</span>))
+h = <span class="builtin">float</span>(<span class="builtin">input</span>(<span class="str">"enter the number of stepsize:"</span>))
+
+<span class="kw">while</span>(x0 &lt; xr):
+    k1 = h * f(x0, y0)
+    k2 = h * f(x0 + h/<span class="num">2</span>, y0 + k1/<span class="num">2</span>)
+    k3 = h * f(x0 + h/<span class="num">2</span>, y0 + k2/<span class="num">2</span>)
+    k4 = h * f(x0 + h, y0 + k3)
+    k = <span class="num">1</span>/<span class="num">6</span> * (k1 + <span class="num">2</span>*k2 + <span class="num">2</span>*k3 + k4)
+    <span class="builtin">print</span>(<span class="str">"k="</span>, k)
+    y1 = y0 + k
+    x1 = x0 + h
+    <span class="builtin">print</span>(<span class="str">"y1="</span>, y1)
+    <span class="builtin">print</span>(<span class="str">"x1="</span>, x1)
+    x0 = x1
+    y0 = y1
+<span class="builtin">print</span>(<span class="str">"end"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c7', this)">COPY</button>
+
+    <div class="output">x0=0, y0=1, xr=0.2, h=0.1 → y1=1.1103... x1=0.1 → y1=1.2428 x1=0.2</div>
+
+    <table>
+      <tr><th>dy/dx = f(x,y)</th><th>return statement</th></tr>
+      <tr><td>x + y</td><td>return x + y</td></tr>
+      <tr><td>y² - x²</td><td>return y**2 - x**2</td></tr>
+      <tr><td>x - y²</td><td>return x - y**2</td></tr>
+      <tr><td>1 + y²</td><td>return 1 + y**2</td></tr>
+      <tr><td>y² + x²</td><td>return y**2 + x**2</td></tr>
+    </table>
+
+    <div class="tip">⚡ while loop runs until x0 reaches xr. Step size h controls how many iterations.</div>
+
+  </div>
+</div>
+
+<!-- EXP 8 -->
+<div class="exp" id="exp8">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">EXP 8</span>
+    <span class="exp-title">Jacobi Method (Simultaneous Equations)</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+
+    <div class="theory">
+      <b>Solves:</b> system of 3 equations with 3 unknowns iteratively.<br>
+      Rearrange each equation for its diagonal variable. Substitute, repeat.<br>
+      <b>Condition:</b> diagonal elements must be largest (dominant diagonal).
+    </div>
+
+    <div class="section-label">System from your file: 20x₁+x₂-2x₃=17, 3x₁+20x₂-x₃=-18, 2x₁-3x₂+20x₃=25</div>
+
+    <pre><code id="c8"><span class="builtin">print</span>(<span class="str">"Program for Jacobi's Method"</span>)
+
+<span class="kw">def</span> <span class="fn">f1</span>(x, y, z):
+    <span class="kw">return</span> <span class="num">1</span>/<span class="num">20</span> * (<span class="num">17</span> - y + <span class="num">2</span>*z)   <span class="cm"># x1 = (17 - x2 + 2x3) / 20</span>
+
+<span class="kw">def</span> <span class="fn">f2</span>(x, y, z):
+    <span class="kw">return</span> <span class="num">1</span>/<span class="num">20</span> * (-<span class="num">18</span> - <span class="num">3</span>*x + z)  <span class="cm"># x2 = (-18 - 3x1 + x3) / 20</span>
+
+<span class="kw">def</span> <span class="fn">f3</span>(x, y, z):
+    <span class="kw">return</span> <span class="num">1</span>/<span class="num">20</span> * (<span class="num">25</span> - <span class="num">2</span>*x + <span class="num">3</span>*y)  <span class="cm"># x3 = (25 - 2x1 + 3x2) / 20</span>
+
+x0 = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of x0: "</span>))
+y0 = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of y0: "</span>))
+z0 = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the value of z0: "</span>))
+n = <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="str">"Enter the number of iteration: "</span>))
+x0 = <span class="num">0</span>
+y0 = <span class="num">0</span>
+z0 = <span class="num">0</span>
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="builtin">range</span>(<span class="num">0</span>, n):
+    x1 = f1(x0, y0, z0)
+    y1 = f2(x0, y0, z0)
+    z1 = f3(x0, y0, z0)
+    <span class="builtin">print</span>(<span class="str">"iteration no:"</span>, i+<span class="num">1</span>)
+    <span class="builtin">print</span>(x1, <span class="str">"\t\t"</span>, y1, <span class="str">"\t\t"</span>, z1)
+    x0 = x1
+    y0 = y1
+    z0 = z1
+<span class="builtin">print</span>(<span class="str">"End"</span>)</code></pre>
+    <button class="copy-btn" onclick="copyCode('c8', this)">COPY</button>
+
+    <div class="output">x0=y0=z0=0, n=3 → iteration 1: 0.85, -0.9, 1.25 → ... converging</div>
+
+    <div class="tip">⚡ If examiner gives different equations, ONLY change f1, f2, f3 return statements. Rearrange: x = (d - other terms) / diagonal coefficient</div>
+
+    <div class="section-label">How to rearrange any system</div>
+    <div class="theory">
+      Given: <b>a·x + b·y + c·z = d</b><br>
+      Rearrange for x: <b>x = (d - b·y - c·z) / a</b><br>
+      Do same for y and z using their respective diagonal coefficients.
+    </div>
+
+  </div>
+</div>
+
+<!-- QUICK REF -->
+<div class="exp" id="quickref">
+  <div class="exp-header" onclick="toggle(this)">
+    <span class="exp-num">⚡</span>
+    <span class="exp-title">QUICK REFERENCE — Which Method to Use?</span>
+    <span class="toggle">▼</span>
+  </div>
+  <div class="exp-body open">
+    <table>
+      <tr><th>Question says...</th><th>Use</th><th>Key formula</th></tr>
+      <tr><td>Root of f(x)=0, interval given</td><td>Bisection (EXP 2)</td><td>c = (a+b)/2</td></tr>
+      <tr><td>Root with initial guess x₀</td><td>Newton-Raphson (EXP 3)</td><td>x₁ = x₀ - f/f'</td></tr>
+      <tr><td>Interpolate, equally spaced x</td><td>Newton Forward (EXP 4)</td><td>p = (xr-x₀)/h</td></tr>
+      <tr><td>Interpolate, unequal x spacing</td><td>Lagrange (EXP 5)</td><td>num/den × y[j]</td></tr>
+      <tr><td>Evaluate definite integral</td><td>Simpson's 1/3 (EXP 6)</td><td>h/3 × [ends + 4odd + 2even]</td></tr>
+      <tr><td>Solve dy/dx = f(x,y)</td><td>Runge-Kutta (EXP 7)</td><td>K=(K1+2K2+2K3+K4)/6</td></tr>
+      <tr><td>Solve simultaneous equations</td><td>Jacobi (EXP 8)</td><td>Rearrange for diagonal</td></tr>
+    </table>
+
+    <div class="section-label" style="margin-top:12px">Common math.functions</div>
+    <div class="theory">
+      <b>math.cos(x)</b> &nbsp;|&nbsp; <b>math.sin(x)</b> &nbsp;|&nbsp; <b>math.exp(x)</b> → eˣ &nbsp;|&nbsp; <b>math.log(x)</b> → ln(x)<br>
+      <b>x**2</b> → x² &nbsp;|&nbsp; <b>x**3</b> → x³ &nbsp;|&nbsp; <b>x**0.5</b> → √x
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.toggle');
+  body.classList.toggle('open');
+  icon.textContent = body.classList.contains('open') ? '▼' : '▶';
+}
+
+function copyCode(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
