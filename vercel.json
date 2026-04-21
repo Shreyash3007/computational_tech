@@ -1,0 +1,5 @@
+{
+    "rewrites": [
+          { "source": "/", "destination": "/comp_techniques_ref.html" }
+    ]
+}
